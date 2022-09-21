@@ -1,50 +1,115 @@
 #ifndef PHILO_H
-#define PHILO_H
+# define PHILO_H
 
-/* ***** INCLUDES ***** */
-#include <limits.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+/* *************** INCLUDES *************** */
+# include <limits.h>
+# include <stdbool.h>
+# include <stdint.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
 
 // For time management
-#include <sys/time.h>
+# include <sys/time.h>
 
 // For threading
-#include <pthread.h>
+# include <pthread.h>
 
-/* ***** MACROS ***** */
-#define ERROR "Error!"
-#define ERRARG "Error! Please check your args"
-#define ERRMAL "Error! Somthing went wrong while trying to malloc\n"
-#define ERRHLP "Error! Please enter just <help> to get help!"
+/* *************** ***************           *************** *************** */
+/*                                   MACROS                                  */
+/* *************** ***************           *************** *************** */
+# define ERROR "Error!"
+# define ERRARG "Error! Please check your args"
+# define ERRMAL "Error! Somthing went wrong while trying to malloc\n"
+# define ERRHLP "Error! Please enter just <help> to get help!"
 
 /* ***** MOVES ***** */
-#define EAT "is eating"
-#define SLEEP "is sleeping"
-#define THINK "is thinking"
-#define FORK "has taken a fork"
-#define DIED "died ☠️"
+# define EAT "is eating"
+# define SLEEP "is sleeping"
+# define THINK "is thinking"
+# define FORK "has taken a fork"
+# define DIED "died ☠️"
 
 /* ***** COLORS ***** */
-#define BRED "\e[1;31m"
-#define PINK "\e[0;38;5;199m"
-#define GREEN "\e[0;32m"
-#define BLUE "\e[0;34m"
-#define G_BLUE "\e[0;38;5;24m"
-#define B_BLUE "\e[1;34m"
-#define G_CYAN "\e[0;38;5;44m"
+# define BRED "\e[1;31m"
+# define PINK "\e[0;38;5;199m"
+# define GREEN "\e[0;32m"
+# define BLUE "\e[0;34m"
+# define G_BLUE "\e[0;38;5;24m"
+# define B_BLUE "\e[1;34m"
+# define G_CYAN "\e[0;38;5;44m"
 
-/*
-** Help message
-*/
-#define HELP "The number of argments must be 4 or 5:\n\
+/* ***** HELP MESSAGE ***** */
+# define HELP "The number of argments must be 4 or 5:\n\
 - arg1 number_of_philosophers\n\
 - arg2 time_to_die\n\
 - arg3 time_to_eat\n\
 - arg4 time_to_sleep\n\
 - arg5 number_of_times_each_philosopher_must_eat (optional)"
+
+/* *************** ***************           *************** *************** */
+/*                                    ENUMS                                  */
+/* *************** ***************           *************** *************** */
+typedef enum e_bool
+{
+	False,
+	True,
+}					t_bool;
+
+
+/* *************** ***************           *************** *************** */
+/*                                   STRUCTS                                 */
+/* *************** ***************           *************** *************** */
+typedef struct s_chopstick
+{
+	size_t			left;
+	size_t			right;
+}					t_chopstick;
+
+typedef struct s_master
+{
+	size_t			philo_nb;
+	time_t			time_to_eat;
+	time_t			time_to_die;
+	time_t			time_to_sleep;
+	time_t			time_begin;
+	size_t			repeat_time;
+	size_t			thread_nb;
+	size_t			is_philo_dead;
+	pthread_t		maestro;
+	pthread_mutex_t	*chopsticks;
+	pthread_mutex_t	writing_lock;
+	struct s_philo	*philos;
+}					t_master;
+
+typedef struct s_philo
+{
+	pthread_t		thread;
+	size_t			id;
+	size_t			times_ate;
+	time_t			last_meal;
+	size_t			status;
+	pthread_mutex_t	eating_lock;
+	t_chopstick		chops;
+	t_master		master;
+}					t_philo;
+
+/* *************** ***************           *************** *************** */
+/*                                 FUNCTIONS                                 */
+/* *************** ***************           *************** *************** */
+
+/* ***** CHECK_ARGS.c ***** */
+void				args_are_valid(char **argv);
+void				print_args_errors(t_master *master, size_t argc);
+
+/* ***** INIT.c ***** */
+void				init_master(size_t argc, char **argv, t_master **master);
+
+/* ***** LOGS.c ***** */
+void				msg_error(char *str);
+
+/* ***** UTILS.c ***** */
+size_t				ft_strlen(char *str);
+size_t				ft_atol(const char *str);
 
 #endif
