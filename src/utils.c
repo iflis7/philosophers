@@ -35,3 +35,11 @@ size_t	ft_atol(const char *str)
 	}
 	return (num * sign);
 }
+
+time_t	get_time(void)
+{
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	return ((time.tv_sec * 1000) + (time.tv_usec * 0.001));
+}

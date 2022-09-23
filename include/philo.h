@@ -24,20 +24,23 @@
 # define ERRHLP "Error! Please enter just <help> to get help!"
 
 /* ***** MOVES ***** */
-# define EAT "is eating"
-# define SLEEP "is sleeping"
-# define THINK "is thinking"
-# define FORK "has taken a fork"
-# define DIED "died ☠️"
+# define EATING "🍔 is eating 🍔"
+# define SLEEPING "😴 is sleeping 😴"
+# define THINKING "🤔 is thinking 🤔"
+# define CHOPSTICK1 "🍴 has taken the  first chopstick 🍴"
+# define CHOPSTICK2 "🍴 has taken the second chopstick 🍴"
+# define DEAD "💀☠️ DEAD 💀☠️"
 
 /* ***** COLORS ***** */
+# define RESET "\e[0m"
+# define BBLK "\e[1;30m"
 # define BRED "\e[1;31m"
-# define PINK "\e[0;38;5;199m"
-# define GREEN "\e[0;32m"
-# define BLUE "\e[0;34m"
-# define G_BLUE "\e[0;38;5;24m"
-# define B_BLUE "\e[1;34m"
-# define G_CYAN "\e[0;38;5;44m"
+# define BGREEN "\e[1;32m"
+# define BYEL "\e[1;33m"
+# define BBLUE "\e[1;34m"
+# define BMAG "\e[1;35m"
+# define BCYAN "\e[1;36m"
+# define BWHT "\e[1;37m"
 
 /* ***** HELP MESSAGE ***** */
 # define HELP "The number of argments must be 4 or 5:\n\
@@ -56,7 +59,6 @@ typedef enum e_bool
 	True,
 }					t_bool;
 
-
 /* *************** ***************           *************** *************** */
 /*                                   STRUCTS                                 */
 /* *************** ***************           *************** *************** */
@@ -70,13 +72,13 @@ typedef struct s_master
 {
 	size_t			philo_nb;
 	time_t			time_to_eat;
-	time_t			time_to_die;
+	time_t			ultimatum;
 	time_t			time_to_sleep;
 	time_t			time_begin;
 	size_t			repeat_time;
 	size_t			thread_nb;
 	size_t			is_philo_dead;
-	pthread_t		maestro;
+	// pthread_t		maestro;
 	pthread_mutex_t	*chopsticks;
 	pthread_mutex_t	writing_lock;
 	struct s_philo	*philos;
@@ -107,9 +109,14 @@ void				init_master(size_t argc, char **argv, t_master **master);
 
 /* ***** LOGS.c ***** */
 void				msg_error(char *str);
+t_bool	print_output(t_master *master, size_t id, char *color, char *status);
 
 /* ***** UTILS.c ***** */
 size_t				ft_strlen(char *str);
 size_t				ft_atol(const char *str);
+time_t	get_time(void);
 
+/* ***** THREADING.c ***** */
+t_bool				threading(t_master *master);
+t_bool	join_threads(t_master *master);
 #endif

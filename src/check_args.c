@@ -21,7 +21,7 @@ void	args_are_valid(char **argv)
 
 void	print_args_errors(t_master *master, size_t argc)
 {
-	if (!master->philo_nb || !master->time_to_die || !master->time_to_eat
+	if (!master->philo_nb || !master->ultimatum || !master->time_to_eat
 		|| !master->time_to_sleep)
 	{
 		printf("%s%s\n", BRED, ERRARG);
