@@ -7,7 +7,8 @@ int	main(int argc, char **argv)
 	{
 		args_are_valid(argv);
         init_master(argc, argv, &master);
-        
+        if (threading(master) == False)
+			return (1);
 	}
 	return(0);
 }

@@ -24,20 +24,23 @@
 # define ERRHLP "Error! Please enter just <help> to get help!"
 
 /* ***** MOVES ***** */
-# define EAT "is eating"
-# define SLEEP "is sleeping"
-# define THINK "is thinking"
-# define FORK "has taken a fork"
-# define DIED "died ☠️"
+# define EATING "🍔 is eating 🍔"
+# define SLEEPING "😴 is sleeping 😴"
+# define THINKING "🤔 is thinking 🤔"
+# define CHOPSTICK1 "🍴 has taken the  first chopstick 🍴"
+# define CHOPSTICK2 "🍴 has taken the second chopstick 🍴"
+# define DEAD "💀☠️ DEAD 💀☠️"
 
 /* ***** COLORS ***** */
+# define RESET "\e[0m"
+# define BBLK "\e[1;30m"
 # define BRED "\e[1;31m"
-# define PINK "\e[0;38;5;199m"
-# define GREEN "\e[0;32m"
-# define BLUE "\e[0;34m"
-# define G_BLUE "\e[0;38;5;24m"
-# define B_BLUE "\e[1;34m"
-# define G_CYAN "\e[0;38;5;44m"
+# define BGREEN "\e[1;32m"
+# define BYEL "\e[1;33m"
+# define BBLUE "\e[1;34m"
+# define BMAG "\e[1;35m"
+# define BCYAN "\e[1;36m"
+# define BWHT "\e[1;37m"
 
 /* ***** HELP MESSAGE ***** */
 # define HELP "The number of argments must be 4 or 5:\n\
@@ -55,7 +58,6 @@ typedef enum e_bool
 	False,
 	True,
 }					t_bool;
-
 
 /* *************** ***************           *************** *************** */
 /*                                   STRUCTS                                 */
@@ -87,7 +89,7 @@ typedef struct s_philo
 	pthread_t		thread;
 	size_t			id;
 	size_t			times_ate;
-	time_t			last_meal;
+	time_t			time_to_die;
 	size_t			status;
 	pthread_mutex_t	eating_lock;
 	t_chopstick		chops;
@@ -107,9 +109,29 @@ void				init_master(size_t argc, char **argv, t_master **master);
 
 /* ***** LOGS.c ***** */
 void				msg_error(char *str);
+void				print_help(char **argv);
+time_t				get_time(void);
+time_t				delta_time(time_t time);
 
 /* ***** UTILS.c ***** */
 size_t				ft_strlen(char *str);
 size_t				ft_atol(const char *str);
+size_t				ft_strncmp(char *str1, char *str2, size_t n);
+void				time_excution(time_t time);
+
+/* ***** THREADS.c ***** */
+t_bool				threading(t_master *master);
+t_bool	join_threads(t_master *master);
+
+/* ***** SHTICK.c ***** */
+void				*shtick(void *args);
+t_bool				execute_shtick(t_master *main, size_t i);
+t_bool				print_output(t_master *main, size_t id, char *color, char *status);
+void				*shtick_check(void *args);
+
+/* ***** MOVES.c ***** */
+t_bool				philo_eat(t_master *master, size_t i);
+t_bool				drop_forks(t_master *master, size_t i);
+t_bool	philo_is_dead(t_master *master, size_t *i);
 
 #endif

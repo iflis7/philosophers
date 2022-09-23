@@ -1,45 +1,58 @@
 #include "../include/philo.h"
 
-void	init_chops(t_master *master)
+t_bool	init_chops(t_master *master)
 {
+	size_t	i;
+
 	master->chopsticks = malloc(sizeof(pthread_mutex_t) * master->philo_nb);
-	if (!master->chopsticks)
+	if (master->chopsticks == NULL)
 		msg_error(ERRMAL);
+	i = 0;
+	while (i < master->philo_nb)
+	{
+		if (pthread_mutex_init(&master->chopsticks[i], NULL) != 0)
+			return (False);
+		i++;
+	}
+	return (True);
 }
 
 static void	find_best_chops(t_philo *philo)
 {
-	philo->chops.left = philo->id;
-	philo->chops.right = (philo->id + 1) % philo->master.philo_nb;
 	if (philo->id % 2)
 	{
 		philo->chops.left = (philo->id + 1) % philo->master.philo_nb;
 		philo->chops.right = philo->id;
 	}
+	else
+	{
+		philo->chops.left = philo->id;
+		philo->chops.right = (philo->id + 1) % philo->master.philo_nb;
+	}
 }
 
-t_philo	*init_philos(t_master **master)
+void	init_philos(t_master **master)
 {
-	t_philo	**philos;
 	size_t	i;
 
-	philos = malloc(sizeof(t_philo) * ((*master)->philo_nb));
-	if (!philos)
+	(*master)->philos = malloc(sizeof(t_philo) * ((*master)->philo_nb));
+	if (!(*master)->philos)
 		msg_error(ERRMAL);
 	i = 0;
-	init_chops(*master);
+	if (init_chops(*master) == False)
+		msg_error(ERRMAL);
 	while (i < (*master)->philo_nb)
 	{
-		philos[i] = malloc(sizeof(t_philo) * 1);
-		if (!philos[i])
-			msg_error(ERRMAL);
-		philos[i]->master = *(*master);
-		philos[i]->id = i;
-		philos[i]->times_ate = 0;
-		find_best_chops(philos[i]);
+		(*master)->philos[i].master = *(*master);
+		(*master)->philos[i].id = i;
+		(*master)->philos[i].times_ate = 0;
+		(*master)->philos[i].time_to_die = 0;
+		find_best_chops(&(*master)->philos[i]);
 		i++;
 	}
-	return (*philos);
+	// pthread_mutex_lock(&master->writing_lock);
+	(*master)->thread_nb = (*master)->philo_nb;
+	// pthread_mutex_unlock(&master->writing_lock);
 }
 
 void	init_master(size_t argc, char **argv, t_master **master)
@@ -51,8 +64,9 @@ void	init_master(size_t argc, char **argv, t_master **master)
 	(*master)->time_to_die = ft_atol(argv[2]);
 	(*master)->time_to_eat = ft_atol(argv[3]);
 	(*master)->time_to_sleep = ft_atol(argv[4]);
-	// (*master)->repeat_time = 0;
 	if (argv[5])
 		(*master)->repeat_time = ft_atol(argv[5]);
 	print_args_errors(*master, argc);
+	init_philos(master);
+	(*master)->is_philo_dead = False;
 }
