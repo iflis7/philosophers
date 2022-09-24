@@ -78,7 +78,7 @@ typedef struct s_master
 	size_t			repeat_time;
 	size_t			thread_nb;
 	size_t			is_philo_dead;
-	// pthread_t		maestro;
+	pthread_t		maestro;
 	pthread_mutex_t	*chopsticks;
 	pthread_mutex_t	writing_lock;
 	struct s_philo	*philos;
@@ -89,7 +89,7 @@ typedef struct s_philo
 	pthread_t		thread;
 	size_t			id;
 	size_t			times_ate;
-	time_t			last_meal;
+	time_t			time_to_die;
 	size_t			status;
 	pthread_mutex_t	eating_lock;
 	t_chopstick		chops;
@@ -109,14 +109,29 @@ void				init_master(size_t argc, char **argv, t_master **master);
 
 /* ***** LOGS.c ***** */
 void				msg_error(char *str);
-t_bool	print_output(t_master *master, size_t id, char *color, char *status);
+t_bool				print_output(t_master *master, size_t id, char *color,
+						char *status);
 
 /* ***** UTILS.c ***** */
 size_t				ft_strlen(char *str);
 size_t				ft_atol(const char *str);
-time_t	get_time(void);
+time_t				get_time(void);
+time_t				time_range(time_t time);
 
 /* ***** THREADING.c ***** */
 t_bool				threading(t_master *master);
-t_bool	join_threads(t_master *master);
+t_bool				join_threads(t_master *master);
+
+/* ***** ROUTINE.c ***** */
+void				*routine(void *args);
+t_bool				execute_routine(t_master *master, size_t i);
+void				*routine_maestro(void *args);
+
+/* ***** MOVES.c ***** */
+t_bool				eat(t_master *master, size_t i);
+t_bool				go_sleep(t_master *master, size_t i);
+t_bool				think(t_master *master, size_t i);
+t_bool				drop_chops(t_master *master, int i);
+t_bool				is_philo_dead(t_master *master, size_t *i);
+
 #endif

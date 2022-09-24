@@ -3,10 +3,10 @@ NAME = philo
 SRCS_PATH = src/
 
 CC = gcc
-CFLAGS =  -Wall -Werror -Wextra -fsanitize=thread -g
+CFLAGS =  -Wall -Werror -Wextra -fsanitize=thread -g 
 RM = rm -f
 
-SRCS_FILES = philo.c init.c check_args.c logs.c utils.c threading.c
+SRCS_FILES = philo.c init.c check_args.c logs.c utils.c threading.c routine.c moves.c
 
 SRCS = $(addprefix $(SRCS_PATH), $(SRCS_FILES))
 OBJS = $(SRCS:.c=.o)

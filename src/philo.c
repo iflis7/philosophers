@@ -8,7 +8,6 @@ int	main(int argc, char **argv)
 		args_are_valid(argv);
         init_master(argc, argv, &master);
 		threading(master);
-		
         
 	}
 	return(0);

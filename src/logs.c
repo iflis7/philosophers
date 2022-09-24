@@ -11,10 +11,9 @@ t_bool	print_output(t_master *master, size_t id, char *color, char *status)
 {
 	time_t	present;
 
-	present = delta_time(master->time_begin);
+	present = time_range(master->time_begin);
 	if (master->is_philo_dead)
 		return (False);
-	// pthread_mutex_unlock(&master->writing_lock);
 	pthread_mutex_lock(&master->writing_lock);
 	if (master->is_philo_dead)
 	{
