@@ -21,7 +21,7 @@ t_bool	print_output(t_master *master, size_t id, char *color, char *status)
 		return (False);
 	}
 	else
-		printf("%s%-10ld %-3zu %-30s%s\n", color, present, id, status, RESET);
+		printf("%s%-10ld %-3zu %-30s%s\n", color, present, id + 1, status, RESET);
 	pthread_mutex_unlock(&master->writing_lock);
 	return (True);
 }

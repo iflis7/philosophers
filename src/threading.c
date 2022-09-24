@@ -20,9 +20,9 @@ t_bool	threading(t_master *master)
 		i++;
 	}
 	// if (pthread_create(&master->maestro, NULL, &routine_maestro,
-				// (void *) master) != 0)
+	// 			(void *) master) != 0)
 	// 	return (False);
-	// usleep(1000);
+	usleep(1000);
 	if (join_threads(master) != 0)
 		return (False);
 	return (True);

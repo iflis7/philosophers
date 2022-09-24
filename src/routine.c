@@ -47,7 +47,7 @@ void	*routine_maestro(void *args)
 	size_t		i;
 
 	master = (t_master *)args;
-	i = 0;
+	i = 1;
 	if (master->repeat_time)
 	{
 		while (master->philos[i].times_ate < master->repeat_time
