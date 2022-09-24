@@ -12,8 +12,11 @@ t_bool	eat(t_master *master, size_t i)
 		return (False);
 	if (!print_output(master, master->philos[i].id, BGREEN, EATING))
 		return (False);
+	pthread_mutex_lock(&master->writing_lock);
 	master->philos[i].time_to_die = get_time();
-	usleep(master->time_to_eat * 1000);
+	pthread_mutex_unlock(&master->writing_lock);
+	create_delay(master->time_to_eat);
+	// usleep(master->time_to_eat * 1000);
 	drop_chops(master, i);
 	return (True);
 }
@@ -30,7 +33,10 @@ t_bool	think(t_master *master, size_t i)
 {
 	if (!print_output(master, master->philos[i].id, BMAG, THINKING))
 		return (False);
-	usleep(master->time_to_eat * 1000);
+	// pthread_mutex_lock(&master->writing_lock);
+	// usleep(master->time_to_eat * 1000);
+	create_delay(master->time_to_eat);
+	// pthread_mutex_unlock(&master->writing_lock);
 	return (True);
 }
 
@@ -59,6 +65,8 @@ t_bool	drop_chops(t_master *master, int i)
 		return (False);
 	if (pthread_mutex_unlock(&master->chopsticks[master->philos[i].chops.right]))
 		return (False);
+	pthread_mutex_lock(&master->writing_lock);
 	master->philos[i].times_ate++;
+	pthread_mutex_unlock(&master->writing_lock);
 	return (True);
 }

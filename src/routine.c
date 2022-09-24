@@ -40,3 +40,28 @@ void	*routine(void *args)
 	}
 	return (NULL);
 }
+
+void	*routine_maestro(void *args)
+{
+	t_master	*master;
+	size_t		i;
+
+	master = (t_master *)args;
+	i = 0;
+	if (master->repeat_time)
+	{
+		while (master->philos[i].times_ate < master->repeat_time
+			&& !master->is_philo_dead)
+			if (is_philo_dead(master, &i))
+				break ;
+	}
+	else
+	{
+		while (!master->is_philo_dead)
+		{
+			if (!is_philo_dead(master, &i))
+				break ;
+		}
+	}
+	return (NULL);
+}

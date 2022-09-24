@@ -50,3 +50,8 @@ time_t	time_range(time_t time)
 		return (get_time() - time);
 	return (0);
 }
+
+void	create_delay(time_t time)
+{
+	usleep(time * 1000);
+}

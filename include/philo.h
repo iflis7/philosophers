@@ -117,6 +117,7 @@ size_t				ft_strlen(char *str);
 size_t				ft_atol(const char *str);
 time_t				get_time(void);
 time_t				time_range(time_t time);
+void				create_delay(time_t time);
 
 /* ***** THREADING.c ***** */
 t_bool				threading(t_master *master);
