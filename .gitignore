@@ -5,7 +5,9 @@
 ### C ###
 # Prerequisites
 *.d
-
+.DS_Store
+.gitignore
+.vscode
 # Object files
 *.o
 *.ko
@@ -78,7 +80,8 @@ dkms.conf
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
