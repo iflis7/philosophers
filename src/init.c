@@ -1,4 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/27 11:42:41 by hsaadi            #+#    #+#             */
+/*   Updated: 2022/09/27 15:36:04 by hsaadi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/philo.h"
+
+static void	*manage_one_philo(t_master *master)
+{
+	time_t	present;
+
+	present = 0;
+	master->time_begin = get_time();
+	pthread_mutex_lock(&master->chopsticks[master->philos[0].chops.left]);
+	printf("%s%-10ld %-3zu %-30s%s\n", BBLUE, present, master->philos[1].id + 1, CHOPSTICK1, RESET);
+	make_one_sleep(master, master->ultimatum, 0);
+	present = time_range(master->time_begin);
+	printf("%s%-10ld %-3zu %-30s%s\n", BRED, present, master->philos[1].id + 1, DEAD, RESET);
+	pthread_mutex_unlock(&master->chopsticks[master->philos[0].chops.left]);
+	master->is_philo_dead = True;
+	return (NULL);
+}
 
 t_bool	init_chops(t_master *master)
 {
@@ -31,7 +59,7 @@ static void	find_best_chops(t_philo *philo)
 	}
 }
 
-void	init_philos(t_master **master)
+t_bool	init_philos(t_master **master)
 {
 	size_t	i;
 
@@ -47,11 +75,14 @@ void	init_philos(t_master **master)
 		(*master)->philos[i].id = i;
 		(*master)->philos[i].times_ate = 0;
 		find_best_chops(&(*master)->philos[i]);
+		if (pthread_mutex_init(&(*master)->philos[i].death_lock, NULL) != 0)
+			return (False);
 		i++;
 	}
+	return(True);
 }
 
-void	init_master(size_t argc, char **argv, t_master **master)
+t_bool	init_master(size_t argc, char **argv, t_master **master)
 {
 	(*master) = malloc(sizeof(t_master) * 1);
 	if (!master)
@@ -63,6 +94,10 @@ void	init_master(size_t argc, char **argv, t_master **master)
 	if (argv[5])
 		(*master)->repeat_time = ft_atol(argv[5]);
 	print_args_errors(*master, argc);
-	init_philos(master);
+	if(!init_philos(master))
+		return(False);
 	(*master)->is_philo_dead = False;
+	if ((*master)->philo_nb == 1)
+		manage_one_philo(*master);
+	return(True);
 }

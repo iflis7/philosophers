@@ -26,10 +26,11 @@
 /* ***** MOVES ***** */
 # define EATING "🍔 is eating 🍔"
 # define SLEEPING "😴 is sleeping 😴"
+# define SLEEPING1 "😴 is sleeping 1 😴"
 # define THINKING "🤔 is thinking 🤔"
 # define CHOPSTICK1 "🍴 has taken the  first chopstick 🍴"
 # define CHOPSTICK2 "🍴 has taken the second chopstick 🍴"
-# define DEAD "💀☠️ DEAD 💀☠️"
+# define DEAD "💀☠️ IS DEAD 💀☠️"
 
 /* ***** COLORS ***** */
 # define RESET "\e[0m"
@@ -78,8 +79,9 @@ typedef struct s_master
 	size_t			repeat_time;
 	size_t			thread_nb;
 	size_t			is_philo_dead;
-	pthread_t		maestro;
+	// pthread_t		maestro;
 	pthread_mutex_t	*chopsticks;
+	
 	pthread_mutex_t	writing_lock;
 	struct s_philo	*philos;
 }					t_master;
@@ -89,8 +91,9 @@ typedef struct s_philo
 	pthread_t		thread;
 	size_t			id;
 	size_t			times_ate;
-	time_t			time_to_die;
+	time_t			last_eat;
 	size_t			status;
+	pthread_mutex_t	death_lock;
 	pthread_mutex_t	eating_lock;
 	t_chopstick		chops;
 	t_master		master;
@@ -105,7 +108,8 @@ void				args_are_valid(char **argv);
 void				print_args_errors(t_master *master, size_t argc);
 
 /* ***** INIT.c ***** */
-void				init_master(size_t argc, char **argv, t_master **master);
+// void				init_master(size_t argc, char **argv, t_master **master);
+t_bool				init_master(size_t argc, char **argv, t_master **master);
 
 /* ***** LOGS.c ***** */
 void				msg_error(char *str);
@@ -118,6 +122,9 @@ size_t				ft_atol(const char *str);
 time_t				get_time(void);
 time_t				time_range(time_t time);
 void				create_delay(time_t time);
+void				start_delay(time_t start_time);
+// void				death_notice(t_master *master);
+void death_notice(t_master *master, size_t i);
 
 /* ***** THREADING.c ***** */
 t_bool				threading(t_master *master);
@@ -126,13 +133,20 @@ t_bool				join_threads(t_master *master);
 /* ***** ROUTINE.c ***** */
 void				*routine(void *args);
 t_bool				execute_routine(t_master *master, size_t i);
-void				*routine_maestro(void *args);
+// void				*routine_maestro(void *args);
+void	routine_maestro(t_master *master);
 
 /* ***** MOVES.c ***** */
 t_bool				eat(t_master *master, size_t i);
-t_bool				go_sleep(t_master *master, size_t i);
-t_bool				think(t_master *master, size_t i);
+t_bool	make_one_sleep(t_master *master, time_t time, size_t i);
+t_bool	go_sleep(t_master *master, time_t time, size_t i);
+// t_bool				go_sleep(t_master *master);
+// t_bool				think(t_master *master, size_t i);
+t_bool	think(t_master *master, size_t prime,  size_t i);
 t_bool				drop_chops(t_master *master, int i);
-t_bool				is_philo_dead(t_master *master, size_t *i);
+t_bool				is_philo_dead_func(t_master *master, size_t *i);
 
+
+
+t_bool	philo_is_dead(t_master *master);
 #endif

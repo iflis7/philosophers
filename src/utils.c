@@ -46,6 +46,10 @@ time_t	get_time(void)
 
 time_t	time_range(time_t time)
 {
+	// printf("Time: %zu\n", ((time * 1000) + (time / 1000)));
+	// printf("get_time(): %zu\n", get_time());
+	// printf(" time: %zu\n", time);
+	// printf("get_time() - time %zu\n", get_time() - time);
 	if (time > 0)
 		return (get_time() - time);
 	return (0);
@@ -53,5 +57,31 @@ time_t	time_range(time_t time)
 
 void	create_delay(time_t time)
 {
-	usleep(time * 1000);
+	usleep(time * 100);
 }
+
+void	start_delay(time_t start_time)
+{
+	while (get_time() < start_time)
+		continue ;
+}
+
+// void death_notice(t_master *master, size_t i)
+// {
+// 	pthread_mutex_lock(&master->death_lock);
+// 	master->is_philo_dead = True;
+// 	pthread_mutex_unlock(&master->death_lock);
+// 	print_output(master, master->philos[i].id, BRED, DEAD);
+// }
+
+// t_bool	philo_is_dead(t_master *master)
+// {
+// 	t_bool	status;
+
+// 	status = false;
+// 	pthread_mutex_lock(&master->death_lock);
+// 	if (master->is_philo_dead == true)
+// 		status = true;
+// 	pthread_mutex_unlock(&master->death_lock);
+// 	return (status);
+// }

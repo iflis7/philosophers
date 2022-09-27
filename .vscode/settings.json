@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "system_error": "c",
-        "__threading_support": "c"
+        "__threading_support": "c",
+        "philo.h": "c"
     }
 }
