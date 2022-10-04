@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 13:30:48 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/09/27 13:30:58 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/02 13:27:58 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,19 @@
 
 int	main(int argc, char **argv)
 {
-	size_t		i;
-	t_master	*master;
+	t_table	table;
 
-	i = 0;
-	i = 0;
 	if (argc == 5 || argc == 6)
 	{
-		args_are_valid(argv);
-		init_master(argc, argv, &master);
-		// routine_maestro(master);
-		// while(1)
-		// is_philo_dead(master, &i);
-		threading(master);
-		// while (1)
-		// {
-		// }
+		if (!args_are_valid(argv))
+			return (-1);
+		if (!init_table(argc, argv, &table))
+			return (-1);
+		if (!threading(&table))
+			return (-1);
+		if (!destroying_threads(&table))
+			return (-1);
+		return (0);
 	}
-	return (0);
 }
+// philos_free(&table);

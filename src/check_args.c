@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_args.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/02 13:22:54 by hsaadi            #+#    #+#             */
+/*   Updated: 2022/10/02 13:26:54 by hsaadi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/philo.h"
 
-void	args_are_valid(char **argv)
+bool	args_are_valid(char **argv)
 {
 	int	i;
 	int	j;
@@ -12,25 +24,29 @@ void	args_are_valid(char **argv)
 		while (argv[i][j])
 		{
 			if (!(argv[i][j] >= '0' && argv[i][j] <= '9'))
-				msg_error(ERRARG);
+			{
+				printf("%s%s\n", BRED, ERRARG);
+				return (false);
+			}
 			j++;
 		}
 		i++;
 	}
+	return (true);
 }
 
-void	print_args_errors(t_master *master, size_t argc)
+bool	print_args_errors(t_table *table, size_t argc)
 {
-	if (!master->philo_nb || !master->ultimatum || !master->time_to_eat
-		|| !master->time_to_sleep)
+	if (!table->philos_nb || !table->ultimatum || !table->time_to_eat
+		|| !table->time_to_sleep)
 	{
 		printf("%s%s\n", BRED, ERRARG);
-		exit(0);
+		return (false);
 	}
-	if (argc == 6 && !master->repeat_time)
+	if (argc == 6 && !table->repeat_time)
 	{
 		printf("%s%s\n", BRED, ERRARG);
-		exit(0);
+		return (false);
 	}
+	return (true);
 }
-

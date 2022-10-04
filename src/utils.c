@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/02 13:03:21 by hsaadi            #+#    #+#             */
+/*   Updated: 2022/10/04 18:28:07 by hsaadi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/philo.h"
 
 size_t	ft_strlen(char *str)
@@ -19,8 +31,7 @@ size_t	ft_atol(const char *str)
 	num = 0;
 	sign = 1;
 	i = 0;
-	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\t' || str[i] == '\v'
-		|| str[i] == '\f' || str[i] == '\r')
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	if (str[i] == '+' || str[i] == '-')
 	{
@@ -30,7 +41,7 @@ size_t	ft_atol(const char *str)
 	}
 	while (str[i] && (str[i] >= '0' && str[i] <= '9'))
 	{
-		num = num * 10 + (str[i] - '0');
+		num = (num * 10) + (str[i] - '0');
 		i++;
 	}
 	return (num * sign);
@@ -46,10 +57,6 @@ time_t	get_time(void)
 
 time_t	time_range(time_t time)
 {
-	// printf("Time: %zu\n", ((time * 1000) + (time / 1000)));
-	// printf("get_time(): %zu\n", get_time());
-	// printf(" time: %zu\n", time);
-	// printf("get_time() - time %zu\n", get_time() - time);
 	if (time > 0)
 		return (get_time() - time);
 	return (0);
@@ -57,31 +64,21 @@ time_t	time_range(time_t time)
 
 void	create_delay(time_t time)
 {
-	usleep(time * 100);
+	usleep(time * 1000);
 }
 
-void	start_delay(time_t start_time)
+bool	delaying(t_table *table, time_t time)
 {
-	while (get_time() < start_time)
-		continue ;
+	while (time > 0)
+	{
+		printf("Alaise! \n");
+		usleep(time * 100);
+		time -= 100;
+		if (table->is_philos_dead)
+		{
+			printf("Alai!");
+			return (false);
+		}
+	}
+	return (true);
 }
-
-// void death_notice(t_master *master, size_t i)
-// {
-// 	pthread_mutex_lock(&master->death_lock);
-// 	master->is_philo_dead = True;
-// 	pthread_mutex_unlock(&master->death_lock);
-// 	print_output(master, master->philos[i].id, BRED, DEAD);
-// }
-
-// t_bool	philo_is_dead(t_master *master)
-// {
-// 	t_bool	status;
-
-// 	status = false;
-// 	pthread_mutex_lock(&master->death_lock);
-// 	if (master->is_philo_dead == true)
-// 		status = true;
-// 	pthread_mutex_unlock(&master->death_lock);
-// 	return (status);
-// }

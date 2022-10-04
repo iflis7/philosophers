@@ -1,7 +1,21 @@
-#ifndef PHILO_H
-# define PHILO_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/02 12:01:31 by hsaadi            #+#    #+#             */
+/*   Updated: 2022/10/04 14:50:13 by hsaadi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-/* *************** INCLUDES *************** */
+#ifndef philos_H
+# define philos_H
+
+/* *************** ***************           *************** *************** */
+/*                                  INCLUDES                                 */
+/* *************** ***************           *************** *************** */
 # include <limits.h>
 # include <stdbool.h>
 # include <stdint.h>
@@ -52,15 +66,6 @@
 - arg5 number_of_times_each_philosopher_must_eat (optional)"
 
 /* *************** ***************           *************** *************** */
-/*                                    ENUMS                                  */
-/* *************** ***************           *************** *************** */
-typedef enum e_bool
-{
-	False,
-	True,
-}					t_bool;
-
-/* *************** ***************           *************** *************** */
 /*                                   STRUCTS                                 */
 /* *************** ***************           *************** *************** */
 typedef struct s_chopstick
@@ -69,84 +74,73 @@ typedef struct s_chopstick
 	size_t			right;
 }					t_chopstick;
 
-typedef struct s_master
-{
-	size_t			philo_nb;
-	time_t			time_to_eat;
-	time_t			ultimatum;
-	time_t			time_to_sleep;
-	time_t			time_begin;
-	size_t			repeat_time;
-	size_t			thread_nb;
-	size_t			is_philo_dead;
-	// pthread_t		maestro;
-	pthread_mutex_t	*chopsticks;
-	
-	pthread_mutex_t	writing_lock;
-	struct s_philo	*philos;
-}					t_master;
-
-typedef struct s_philo
+typedef struct s_philos
 {
 	pthread_t		thread;
 	size_t			id;
 	size_t			times_ate;
-	time_t			last_eat;
-	size_t			status;
-	pthread_mutex_t	death_lock;
-	pthread_mutex_t	eating_lock;
+	size_t			time_to_die;
 	t_chopstick		chops;
-	t_master		master;
-}					t_philo;
+	struct s_table	*table;
+}					t_philos;
+
+typedef struct s_table
+{
+	size_t			n_thread;
+	size_t			philos_nb;
+	size_t			ultimatum;
+	size_t			time_to_eat;
+	size_t			time_to_sleep;
+	size_t			repeat_time;
+	size_t			is_philos_dead;
+	time_t			time_begin;
+	pthread_mutex_t	*chopsticks;
+	pthread_mutex_t	writing_lock;
+	pthread_t		maestro;
+	t_philos		*philos;
+}					t_table;
 
 /* *************** ***************           *************** *************** */
 /*                                 FUNCTIONS                                 */
 /* *************** ***************           *************** *************** */
 
 /* ***** CHECK_ARGS.c ***** */
-void				args_are_valid(char **argv);
-void				print_args_errors(t_master *master, size_t argc);
+bool				args_are_valid(char **argv);
+bool				print_args_errors(t_table *table, size_t argc);
 
 /* ***** INIT.c ***** */
-// void				init_master(size_t argc, char **argv, t_master **master);
-t_bool				init_master(size_t argc, char **argv, t_master **master);
+bool				init_table(size_t argc, char **argv, t_table *table);
 
 /* ***** LOGS.c ***** */
-void				msg_error(char *str);
-t_bool				print_output(t_master *master, size_t id, char *color,
+bool				msg_error(char *str);
+bool				print_output(t_table *table, size_t id, char *color,
 						char *status);
+
+/* ***** MOVES.c ***** */
+bool				eat(t_table *table, size_t i);
+bool				go_to_sleep(t_table *table, size_t i);
+bool				think(t_table *table, size_t i);
+bool				is_philo_dead(t_table *table, size_t *i);
+bool				drop_chops(t_table *table, size_t i);
+
+/* ***** ROUTINE.c ***** */
+void				*routine(void *args);
+size_t				run_routine(t_table *table, size_t i);
+void				*maestro_routine(void *args);
+
+/* ***** THREADING.c ***** */
+bool				threading(t_table *table);
+bool				joining_threads(t_table *table);
+bool				destroying_threads(t_table *table);
 
 /* ***** UTILS.c ***** */
 size_t				ft_strlen(char *str);
 size_t				ft_atol(const char *str);
+size_t				ft_strncmp(char *str1, char *str2, size_t n);
 time_t				get_time(void);
 time_t				time_range(time_t time);
 void				create_delay(time_t time);
-void				start_delay(time_t start_time);
-// void				death_notice(t_master *master);
-void death_notice(t_master *master, size_t i);
+bool				delaying(t_table *table, time_t time);
+bool				philo_is_dead(t_table *table);
 
-/* ***** THREADING.c ***** */
-t_bool				threading(t_master *master);
-t_bool				join_threads(t_master *master);
-
-/* ***** ROUTINE.c ***** */
-void				*routine(void *args);
-t_bool				execute_routine(t_master *master, size_t i);
-// void				*routine_maestro(void *args);
-void	routine_maestro(t_master *master);
-
-/* ***** MOVES.c ***** */
-t_bool				eat(t_master *master, size_t i);
-t_bool	make_one_sleep(t_master *master, time_t time, size_t i);
-t_bool	go_sleep(t_master *master, time_t time, size_t i);
-// t_bool				go_sleep(t_master *master);
-// t_bool				think(t_master *master, size_t i);
-t_bool	think(t_master *master, size_t prime,  size_t i);
-t_bool				drop_chops(t_master *master, int i);
-t_bool				is_philo_dead_func(t_master *master, size_t *i);
-
-
-
-t_bool	philo_is_dead(t_master *master);
 #endif

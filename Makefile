@@ -1,32 +1,36 @@
 NAME = philo
 
-SRCS_PATH = src/
-
-CC = gcc
-CFLAGS =  -Wall -Werror -Wextra -fsanitize=thread -g 
-RM = rm -f
+SRC_DIR = src/
+OBJ_DIR = .objs
 
 SRCS_FILES = philo.c init.c check_args.c logs.c utils.c threading.c routine.c moves.c
 
-SRCS = $(addprefix $(SRCS_PATH), $(SRCS_FILES))
+SRCS = $(addprefix $(SRC_DIR), $(SRCS_FILES))
 OBJS = $(SRCS:.c=.o)
 
+CC = gcc
+CFLAGS = -Wall -Werror -Wextra -g -fsanitize=address
+LFLAGS = -pthread
+RM = rm -rf
 
-all: 	$(NAME)
-	@echo "BOOM 💥💥💥💥💥 $(NAME) Compiled! 💯 $(DEFAULT)"
+
+all: $(NAME)
+#@echo "BOOM 💥💥💥💥💥 $(NAME) Compiled! 💯 $(DEFAULT)"
 
 $(NAME): $(OBJS)
-	-@$(CC) $(CFLAGS) -o $@ $^ 
-	@echo "$(GREEN)$(NAME) created!$(DEFAULT)"
+		@$(CC) $(OBJS) $(CFLAGS) $(LFLAGS) -o $(NAME)
+#@echo "$(GREEN)$(NAME) created!$(DEFAULT)"
 
 clean:
-	@$(RM) $(OBJS) 
-	@echo "$(YELLOW)Object files deleted!$(DEFAULT)💯"
+		@$(RM) $(OBJS)
+		@echo "$(YELLOW)Object files deleted!$(DEFAULT)💯"
 
-fclean:	clean
-	@$(RM) $(NAME) 
+fclean: clean
+		@$(RM) $(NAME)
 
-re:		fclean all
+re: fclean all
+
+.PONY: all clean fclean re
 
 git:
 	@git add .
@@ -39,5 +43,3 @@ RED = \033[1;31m
 GREEN = \033[1;32m
 YELLOW = \033[1;33m
 message = "Commit Message By Default On $(shell date "+%d %B %T")"
-
-.PHONY:	all clean libft fclean re message

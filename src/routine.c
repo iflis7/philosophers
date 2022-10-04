@@ -1,81 +1,77 @@
-#include "../include/philo.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/02 12:55:13 by hsaadi            #+#    #+#             */
+/*   Updated: 2022/10/04 18:43:08 by hsaadi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-t_bool	execute_routine(t_master *master, size_t i)
-{
-	// if(is_philo_dead_func(master, &i))
-	// 	return(False);
-	// if(master->is_philo_dead)
-	// 	return(False);
-	if (!eat(master, i))
-		return (False);
-	go_sleep(master, master->time_to_sleep, i);
-	// if(is_philo_dead_func(master, &i))
-	// 	return(False);
-	if(master->philos[i].id % 2)
-		think(master, 1, i);
-	think(master, 0, i);
-	
-	return (True);
-}
+#include "../include/philo.h"
 
 void	*routine(void *args)
 {
-	t_master	*master;
-	size_t		i;
+	t_table	*table;
+	size_t	i;
 
-	master = (t_master *)args;
-	i = 0;
-	pthread_mutex_lock(&master->writing_lock);
-	i = master->thread_nb;
-	pthread_mutex_unlock(&master->writing_lock);
-	start_delay(master->time_begin);
-	// pthread_mutex_lock(&master->death_lock);
-	if (master->repeat_time)
+	table = (t_table *)args;
+	i = table->n_thread;
+	if (table->repeat_time)
 	{
-		while (master->philos[i].times_ate < master->repeat_time && !master->is_philo_dead)
-			execute_routine(master, i);
+		while (table->philos[i].times_ate && !table->is_philos_dead)
+			run_routine(table, i);
 	}
 	else
 	{
-		// printf("WHAAAT!! \n");
-					// pthread_mutex_lock(&master->philos[i].death_lock);
-		while (!master->is_philo_dead)
-		// while (!is_philo_dead_func(master, &i))
+		while (!table->is_philos_dead)
 		{
-			// printf("WHAAAT!!!!!! \n");
-			if (!execute_routine(master, i))
-				{					
-			// pthread_mutex_unlock(&master->philos[i].death_lock);
+			if (!run_routine(table, i))
 				break ;
-				}
-				
-			// pthread_mutex_unlock(&master->philos[i].death_lock);
 		}
 	}
 	return (NULL);
 }
 
-// void	routine_maestro(t_master *master)
-// {
-// 	printf("WHAAAT!! \n");
-// 	size_t		i;
-// 	i = 0;
-// 	if (master->repeat_time)
-// 	{
-// 		while ( master->philos[i].times_ate < master->repeat_time && !master->is_philo_dead)
-// 			if (is_philo_dead_func(master, &i))
-// 				break ;
-// 	}
-// 	else
-// 	{
-// 		// pthread_mutex_lock(&master->death_lock);
-// 	while (master->is_philo_dead == False)
-// 	{
-// 		if (!is_philo_dead_func(master, &i))
-// 			{
-// 			// pthread_mutex_lock(&master->death_lock);
-// 			break ;
-// 			}
-// 	}
-// 	}
-// }
+size_t	run_routine(t_table *table, size_t i)
+{
+	if (!eat(table, i))
+		return (false);
+	if (table->philos[i].times_ate)
+	{
+		if (!go_to_sleep(table, i))
+			return (false);
+		if (!think(table, i))
+			return (false);
+	}
+	return (true);
+}
+
+void	*maestro_routine(void *args)
+{
+	t_table	*table;
+	size_t	i;
+
+	table = (t_table *)args;
+	i = 0;
+	if (table->philos[i].times_ate)
+	{
+		while (table->philos[i].times_ate && !table->is_philos_dead)
+		{
+			if (is_philo_dead(table, &i))
+				break ;
+
+		}
+	}
+	else
+	{
+		while (!table->is_philos_dead)
+		{
+			if (is_philo_dead(table, &i))
+				break ;
+		}
+	}
+	return (NULL);
+}
