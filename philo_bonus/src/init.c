@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:00:49 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/05 14:23:09 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/11 15:07:17 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ static bool	manage_one_philo(t_table *table)
 
 	present = 0;
 	table->time_begin = get_time();
-	// pthread_mutex_lock(&table->chopsticks[table->philos[0].chops.left]);
+	sem_wait(&table->philos[0].chops.left);
 	printf("%s%-10ld %-3zu %-30s%s\n", BBLUE, present, table->philos[0].id,
 			CHOPSTICK1, RESET);
 	create_delay(table->ultimatum);
 	present = time_range(table->time_begin);
 	printf("%s%-10ld %-3zu %-30s%s\n", BRED, present, table->philos[0].id, DEAD,
 			RESET);
-	// pthread_mutex_unlock(&table->chopsticks[table->philos[0].chops.left]);
+	sem_post(&table->philos[0].chops.left);
 	table->is_philos_dead = true;
 	return (false);
 }

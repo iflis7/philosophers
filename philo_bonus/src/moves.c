@@ -6,30 +6,25 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:53:38 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/04 18:42:51 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/11 16:31:10 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "../include/philo_bonus.h"
 
 bool	eat(t_table *table, size_t i)
 {
-	if (!!pthread_mutex_lock(&table->chopsticks[table->philos[i].chops.left]))
-		return (false);
+	sem_wait(&table->philos[i].chops.left);
 	if (!print_output(table, table->philos[i].id, BBLUE, CHOPSTICK1))
 		return (false);
-	if (!!pthread_mutex_lock(&table->chopsticks[table->philos[i].chops.right]))
-		return (false);
+	sem_wait(&table->philos[i].chops.right);
 	if (!print_output(table, table->philos[i].id, BBLUE, CHOPSTICK2))
 		return (false);
 	if (!print_output(table, table->philos[i].id, BGREEN, EATING))
 		return (false);
 	table->philos[i].time_to_die = get_time();
 	create_delay(table->time_to_eat);
-	// create_delay(50);
-	// delaying(table, table->time_to_eat);
-	// while (!table->is_philos_dead && table->time_to_eat)
-		// create_delay(50);
+
 	drop_chops(table, i);
 	return (true);
 }
@@ -38,10 +33,7 @@ bool	go_to_sleep(t_table *table, size_t i)
 {
 	if (!print_output(table, table->philos[i].id, BYEL, SLEEPING))
 		return (false);
-	// while (!table->is_philos_dead && table->time_to_sleep)
-	// create_delay(50);
 	create_delay(table->time_to_sleep);
-	// delaying(table, table->time_to_sleep);
 	return (true);
 }
 
@@ -68,10 +60,8 @@ bool	is_philo_dead(t_table *table, size_t *i)
 
 bool	drop_chops(t_table *table, size_t i)
 {
-	if (pthread_mutex_unlock(&table->chopsticks[table->philos[i].chops.left]))
-		return (false);
-	if (pthread_mutex_unlock(&table->chopsticks[table->philos[i].chops.right]))
-		return (false);
+	sem_post(&table->philos[i].chops.left);
+	sem_post(&table->philos[i].chops.right);
 	table->philos[i].times_ate--;
 	return (true);
 }

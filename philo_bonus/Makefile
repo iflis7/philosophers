@@ -21,9 +21,6 @@ $(NAME): $(OBJS)
 		@$(CC) $(OBJS) $(CFLAGS) $(LFLAGS) -o $(NAME)
 #@echo "$(GREEN)$(NAME) created!$(DEFAULT)"
 
-bonus: 
-	
-
 clean:
 		@$(RM) $(OBJS)
 		@echo "$(YELLOW)Object files deleted!$(DEFAULT)💯"

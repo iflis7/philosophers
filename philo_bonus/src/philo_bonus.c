@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 13:30:48 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/05 11:35:47 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/11 11:16:54 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int	main(int argc, char **argv)
 			return (-1);
 		if (!threading(&table))
 			return (-1);
-		if (!destroying_threads(&table))
-			return (-1);
+		// if (!destroying_threads(&table))
+		// 	return (-1);
 		return (0);
 	}
 }

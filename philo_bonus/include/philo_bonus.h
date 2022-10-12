@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:01:31 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/05 14:18:56 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/11 16:40:37 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@
 /* *************** ***************           *************** *************** */
 typedef struct s_chopstick
 {
-	size_t			left;
+	sem_t			left;
 	char			*s_left;
-	size_t			right;
+	sem_t			right;
 	char			*s_right;
 }					t_chopstick;
 
@@ -99,8 +99,8 @@ typedef struct s_table
 	size_t			repeat_time;
 	size_t			is_philos_dead;
 	time_t			time_begin;
-	// sem_t	*chopsticks;
-	char	*writing_lock;
+	sem_t	writing_lock;
+	char	*writing;
 	// pthread_t		maestro;
 	t_philos		*philos;
 }					t_table;
@@ -129,7 +129,7 @@ bool				is_philo_dead(t_table *table, size_t *i);
 bool				drop_chops(t_table *table, size_t i);
 
 /* ***** ROUTINE.c ***** */
-void				*routine(void *args);
+size_t				*routine(t_table *table, size_t i);
 size_t				run_routine(t_table *table, size_t i);
 void				*maestro_routine(void *args);
 

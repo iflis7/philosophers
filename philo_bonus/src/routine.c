@@ -6,23 +6,22 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:55:13 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/04 18:43:08 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/11 16:46:23 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "../include/philo_bonus.h"
 
-void	*routine(void *args)
+size_t	*routine(t_table *table, size_t i)
 {
-	t_table	*table;
-	size_t	i;
-
-	table = (t_table *)args;
-	i = table->n_thread;
 	if (table->repeat_time)
 	{
-		while (table->philos[i].times_ate && !table->is_philos_dead)
-			run_routine(table, i);
+		while (table->philos[i].times_ate && !table->is_philos_dead && i < table->philos_nb)
+			{
+				run_routine(table, i);
+				printf("i %zu\n", i);
+				i++;
+			}
 	}
 	else
 	{
@@ -47,31 +46,4 @@ size_t	run_routine(t_table *table, size_t i)
 			return (false);
 	}
 	return (true);
-}
-
-void	*maestro_routine(void *args)
-{
-	t_table	*table;
-	size_t	i;
-
-	table = (t_table *)args;
-	i = 0;
-	if (table->philos[i].times_ate)
-	{
-		while (table->philos[i].times_ate && !table->is_philos_dead)
-		{
-			if (is_philo_dead(table, &i))
-				break ;
-
-		}
-	}
-	else
-	{
-		while (!table->is_philos_dead)
-		{
-			if (is_philo_dead(table, &i))
-				break ;
-		}
-	}
-	return (NULL);
 }

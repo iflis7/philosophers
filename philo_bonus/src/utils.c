@@ -6,11 +6,11 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 13:03:21 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/04 18:28:07 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/11 11:14:57 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "../include/philo_bonus.h"
 
 size_t	ft_strlen(char *str)
 {
