@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:01:31 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/11 16:40:37 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/20 02:28:41 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,18 @@
 /* *************** ***************           *************** *************** */
 /*                                  INCLUDES                                 */
 /* *************** ***************           *************** *************** */
+# include <fcntl.h> /* For O_* constants */
 # include <limits.h>
+# include <pthread.h>
+# include <semaphore.h>
+# include <signal.h>
 # include <stdbool.h>
 # include <stdint.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/stat.h> /* For mode constants */
+# include <sys/time.h>
 # include <unistd.h>
-#include <semaphore.h>
- #include <fcntl.h>           /* For O_* constants */
-#include <sys/stat.h>        /* For mode constants */
 
 // For time management
 # include <sys/time.h>
@@ -43,7 +46,6 @@
 /* ***** MOVES ***** */
 # define EATING "🍔 is eating 🍔"
 # define SLEEPING "😴 is sleeping 😴"
-# define SLEEPING1 "😴 is sleeping 1 😴"
 # define THINKING "🤔 is thinking 🤔"
 # define CHOPSTICK1 "🍴 has taken the  first chopstick 🍴"
 # define CHOPSTICK2 "🍴 has taken the second chopstick 🍴"
@@ -71,21 +73,14 @@
 /* *************** ***************           *************** *************** */
 /*                                   STRUCTS                                 */
 /* *************** ***************           *************** *************** */
-typedef struct s_chopstick
-{
-	sem_t			left;
-	char			*s_left;
-	sem_t			right;
-	char			*s_right;
-}					t_chopstick;
 
 typedef struct s_philos
 {
-	pid_t		pid;
+	pid_t			pid;
 	size_t			id;
+	pthread_t		death_reaper;
 	size_t			times_ate;
 	size_t			time_to_die;
-	t_chopstick		chops;
 	struct s_table	*table;
 }					t_philos;
 
@@ -99,9 +94,9 @@ typedef struct s_table
 	size_t			repeat_time;
 	size_t			is_philos_dead;
 	time_t			time_begin;
-	sem_t	writing_lock;
-	char	*writing;
-	// pthread_t		maestro;
+	pid_t			*pids;
+	sem_t			*writing_lock;
+	sem_t			*chops;
 	t_philos		*philos;
 }					t_table;
 
@@ -120,32 +115,26 @@ bool				init_table(size_t argc, char **argv, t_table *table);
 bool				msg_error(char *str);
 bool				print_output(t_table *table, size_t id, char *color,
 						char *status);
+void				start_some_delay(time_t start_time);
 
 /* ***** MOVES.c ***** */
-bool				eat(t_table *table, size_t i);
-bool				go_to_sleep(t_table *table, size_t i);
-bool				think(t_table *table, size_t i);
-bool				is_philo_dead(t_table *table, size_t *i);
-bool				drop_chops(t_table *table, size_t i);
-
-/* ***** ROUTINE.c ***** */
-size_t				*routine(t_table *table, size_t i);
-size_t				run_routine(t_table *table, size_t i);
-void				*maestro_routine(void *args);
+void				ft_eating(t_table *table, t_philos *philo);
 
 /* ***** THREADING.c ***** */
-bool				threading(t_table *table);
-bool				joining_threads(t_table *table);
-bool				destroying_threads(t_table *table);
+bool				creating_pids(t_table *table);
+void				waiting(t_table *table);
+void				ft_kill_pids(t_table *table);
+
+/* ***** ROUTINE.c ***** */
+void				launch_simulation(t_table *table, int i);
+void				*death_reaper(void *args);
+void				init_philo(t_table *table, t_philos *philos, int i);
 
 /* ***** UTILS.c ***** */
 size_t				ft_strlen(char *str);
 size_t				ft_atol(const char *str);
-size_t				ft_strncmp(char *str1, char *str2, size_t n);
 time_t				get_time(void);
-time_t				time_range(time_t time);
 void				create_delay(time_t time);
-bool				delaying(t_table *table, time_t time);
-bool				philo_is_dead(t_table *table);
+size_t				time_range(time_t time);
 
 #endif

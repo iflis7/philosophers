@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 13:03:21 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/11 11:14:57 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/20 02:27:12 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ time_t	get_time(void)
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
-time_t	time_range(time_t time)
+size_t	time_range(time_t time)
 {
 	if (time > 0)
 		return (get_time() - time);
@@ -65,20 +65,4 @@ time_t	time_range(time_t time)
 void	create_delay(time_t time)
 {
 	usleep(time * 1000);
-}
-
-bool	delaying(t_table *table, time_t time)
-{
-	while (time > 0)
-	{
-		printf("Alaise! \n");
-		usleep(time * 100);
-		time -= 100;
-		if (table->is_philos_dead)
-		{
-			printf("Alai!");
-			return (false);
-		}
-	}
-	return (true);
 }

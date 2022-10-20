@@ -6,73 +6,38 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:00:49 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/11 15:07:17 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/20 00:27:22 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo_bonus.h"
 
-static bool	manage_one_philo(t_table *table)
+bool	manage_one_philo(t_table *table)
 {
 	time_t	present;
 
 	present = 0;
 	table->time_begin = get_time();
-	sem_wait(&table->philos[0].chops.left);
+	sem_wait(table->chops);
 	printf("%s%-10ld %-3zu %-30s%s\n", BBLUE, present, table->philos[0].id,
 			CHOPSTICK1, RESET);
-	create_delay(table->ultimatum);
+	usleep(table->ultimatum * 1000);
 	present = time_range(table->time_begin);
 	printf("%s%-10ld %-3zu %-30s%s\n", BRED, present, table->philos[0].id, DEAD,
 			RESET);
-	sem_post(&table->philos[0].chops.left);
+	sem_post(table->chops);
 	table->is_philos_dead = true;
 	return (false);
 }
 
-static bool	init_chops(t_table *table)
+bool	init_semaphore(t_table *table)
 {
-	size_t	i;
-
-	// table->philos->chops = *(t_chopstick)malloc(sizeof(t_chopstick) * table->philos_nb);
-	// if (table->philos->chops == NULL)
-	// 	return (msg_error(ERRMAL));
-	
-	i = 0;
-	while (i < table->philos_nb)
-	{
-		sem_open(table->philos[i].chops.s_left, O_CREAT, 0644, 0);
-		sem_open(table->philos[i].chops.s_right, O_CREAT, 0644, 0);
-		// if (pthread_mutex_init(&table->chopsticks[i], NULL) != 0)
-			// return (false);
-		i++;
-	}
-	return (true);
-}
-
-static bool	init_philos(t_table **table)
-{
-	size_t	i;
-	size_t	j;
-
-	(*table)->philos = malloc(sizeof(t_philos) * ((*table)->philos_nb + 1));
-	if (!(*table)->philos)
-		return (msg_error(ERRMAL));
-	i = 0;
-	j = 1;
-	if (!init_chops(*table))
-		return (msg_error(ERRMAL));
-	while (i < (*table)->philos_nb)
-	{
-		(*table)->philos[i].id = i + 1;
-		(*table)->philos[i].times_ate = (*table)->repeat_time;
-		(*table)->philos[i].chops.left = i;
-		if (i == (*table)->philos_nb - 1)
-			(*table)->philos[i].chops.right = 0;
-		else
-			(*table)->philos[i].chops.right = j++;
-		i++;
-	}
+	sem_unlink("fork_sem");
+	sem_unlink("writing_lock");
+	table->writing_lock = sem_open("writing_lock", O_CREAT | O_EXCL, 777, 1);
+	table->chops = sem_open("fork_sem", O_CREAT | O_EXCL, 777, table->philos_nb);
+	if (table->writing_lock <= 0 || table->chops <= 0)
+		return (false);
 	return (true);
 }
 
@@ -86,10 +51,23 @@ bool	init_table(size_t argc, char **argv, t_table *table)
 		table->repeat_time = ft_atol(argv[5]);
 	if (!print_args_errors(table, argc))
 		return (false);
-	if (!init_philos(&table))
-		return (false);
+	if (!init_semaphore(table))
+		return (msg_error(ERRMAL));
 	table->is_philos_dead = false;
-	if (table->philos_nb == 1)
-		manage_one_philo(table);
+	// if (table->philos_nb == 1)
+	// 	manage_one_philo(table);
 	return (true);
 }
+
+// void    ft_sleep(long int time_to_stop)
+// {
+//     long int    delay;
+
+//     while (1)
+//     {
+//         delay = time_to_stop - ft_get_time();
+//         if (delay <= 0)
+//             break ;
+//         usleep(50);
+//     }
+// }

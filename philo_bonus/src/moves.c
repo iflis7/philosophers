@@ -6,62 +6,21 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:53:38 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/11 16:31:10 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/20 00:46:18 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo_bonus.h"
 
-bool	eat(t_table *table, size_t i)
+void	ft_eating(t_table *table, t_philos *philo)
 {
-	sem_wait(&table->philos[i].chops.left);
-	if (!print_output(table, table->philos[i].id, BBLUE, CHOPSTICK1))
-		return (false);
-	sem_wait(&table->philos[i].chops.right);
-	if (!print_output(table, table->philos[i].id, BBLUE, CHOPSTICK2))
-		return (false);
-	if (!print_output(table, table->philos[i].id, BGREEN, EATING))
-		return (false);
-	table->philos[i].time_to_die = get_time();
+	sem_wait(table->chops);
+	print_output(table, philo->id, BBLUE, CHOPSTICK1);
+	sem_wait(table->chops);
+	print_output(table, philo->id, BBLUE, CHOPSTICK2);
+	philo->time_to_die = get_time();
+	print_output(table, philo->id, BGREEN, EATING);
 	create_delay(table->time_to_eat);
-
-	drop_chops(table, i);
-	return (true);
-}
-
-bool	go_to_sleep(t_table *table, size_t i)
-{
-	if (!print_output(table, table->philos[i].id, BYEL, SLEEPING))
-		return (false);
-	create_delay(table->time_to_sleep);
-	return (true);
-}
-
-bool	think(t_table *table, size_t i)
-{
-	if (!print_output(table, table->philos[i].id, BMAG, THINKING))
-		return (false);
-	return (true);
-}
-
-bool	is_philo_dead(t_table *table, size_t *i)
-{
-	size_t	time;
-
-	time = time_range(table->philos[*i].time_to_die);
-	if (time > table->ultimatum)
-	{
-		print_output(table, table->philos[*i].id, BRED, DEAD);
-		table->is_philos_dead = true;
-		return (true);
-	}
-	return (false);
-}
-
-bool	drop_chops(t_table *table, size_t i)
-{
-	sem_post(&table->philos[i].chops.left);
-	sem_post(&table->philos[i].chops.right);
-	table->philos[i].times_ate--;
-	return (true);
+	sem_post(table->chops);
+	sem_post(table->chops);
 }
