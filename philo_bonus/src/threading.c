@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:48:10 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/20 02:26:27 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/21 09:09:50 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ bool	creating_pids(t_table *table)
 
 void	waiting(t_table *table)
 {
-	size_t i;
-	int status;
+	size_t	i;
+	int		status;
 
 	i = -1;
 	while (++i < table->philos_nb)
 	{
-		waitpid(table->philos->pid, &status, 0);
+		waitpid(-1, &status, 0);
 		if (status)
 		{
 			ft_kill_pids(table);
@@ -53,9 +53,8 @@ void	waiting(t_table *table)
 		}
 	}
 	sem_close(table->chops);
-	sem_close(table->writing_lock);
+	sem_close(table->writing);
 	free(table->pids);
-	// free(table);
 }
 
 void	ft_kill_pids(t_table *table)

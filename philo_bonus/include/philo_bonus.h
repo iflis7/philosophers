@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:01:31 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/20 02:28:41 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/21 09:21:22 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@
 # define EATING "🍔 is eating 🍔"
 # define SLEEPING "😴 is sleeping 😴"
 # define THINKING "🤔 is thinking 🤔"
-# define CHOPSTICK1 "🍴 has taken the  first chopstick 🍴"
-# define CHOPSTICK2 "🍴 has taken the second chopstick 🍴"
+# define CHOP1 "🍴 has taken the  first chopstick 🍴"
+# define CHOP2 "🍴 has taken the second chopstick 🍴"
 # define DEAD "💀☠️ IS DEAD 💀☠️"
 
 /* ***** COLORS ***** */
@@ -80,12 +80,13 @@ typedef struct s_philos
 	size_t			id;
 	pthread_t		death_reaper;
 	size_t			times_ate;
-	size_t			time_to_die;
+	size_t			last_meal;
 	struct s_table	*table;
 }					t_philos;
 
 typedef struct s_table
 {
+	pthread_t		death_reaper;
 	size_t			n_process;
 	size_t			philos_nb;
 	size_t			ultimatum;
@@ -94,10 +95,10 @@ typedef struct s_table
 	size_t			repeat_time;
 	size_t			is_philos_dead;
 	time_t			time_begin;
+	size_t			count_eat;
 	pid_t			*pids;
-	sem_t			*writing_lock;
+	sem_t			*writing;
 	sem_t			*chops;
-	t_philos		*philos;
 }					t_table;
 
 /* *************** ***************           *************** *************** */
@@ -118,7 +119,7 @@ bool				print_output(t_table *table, size_t id, char *color,
 void				start_some_delay(time_t start_time);
 
 /* ***** MOVES.c ***** */
-void				ft_eating(t_table *table, t_philos *philo);
+void				eat(t_table *table, t_philos *philo);
 
 /* ***** THREADING.c ***** */
 bool				creating_pids(t_table *table);
@@ -126,9 +127,9 @@ void				waiting(t_table *table);
 void				ft_kill_pids(t_table *table);
 
 /* ***** ROUTINE.c ***** */
-void				launch_simulation(t_table *table, int i);
+bool				launch_simulation(t_table *table, size_t i);
 void				*death_reaper(void *args);
-void				init_philo(t_table *table, t_philos *philos, int i);
+bool				init_philos(t_table *table, t_philos *philos, size_t i);
 
 /* ***** UTILS.c ***** */
 size_t				ft_strlen(char *str);
@@ -136,5 +137,9 @@ size_t				ft_atol(const char *str);
 time_t				get_time(void);
 void				create_delay(time_t time);
 size_t				time_range(time_t time);
+
+// void	ft_simulation(t_table *table, int i);
+void				ft_print(t_table *table, t_philos *philo, char *str);
+void				ft_error(int error, t_table *table);
 
 #endif

@@ -6,17 +6,15 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 13:30:48 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/19 19:59:38 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/21 09:09:44 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo_bonus.h"
 
-
-
 int	main(int argc, char **argv)
 {
-	t_table table;
+	t_table	table;
 
 	if (argc == 5 || argc == 6)
 	{

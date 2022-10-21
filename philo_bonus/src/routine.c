@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:55:13 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/20 02:38:49 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/21 09:22:51 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,55 +19,50 @@ void	*death_reaper(void *args)
 
 	philo = (t_philos *)args;
 	table = philo->table;
-	while (philo->times_ate)
+	while (1)
 	{
-		if (time_range(philo->time_to_die) > table->ultimatum
-			&& philo->times_ate )
+		if ((get_time() - philo->last_meal) > table->ultimatum
+			&& philo->times_ate != 0)
 		{
-			// print_output(table, philo->id, BRED, DEAD);
-			printf("%s%-10ld %-3zu %-30s%s\n", BRED, time_range(table->time_begin), philo->id, DEAD, RESET);
-			// kill(table->philos->pid, SIGINT);
-			exit(-1);
-			return (NULL);
-
-		}
-		if (time_range(philo->time_to_die) > table->ultimatum
-			&& !philo->times_ate)
+			sem_wait(table->writing);
+			printf("%s%-10ld %-3zu %-30s%s\n", BRED,
+				time_range(table->time_begin), philo->id, DEAD, RESET);
 			exit(1);
+		}
+		if ((get_time() - philo->last_meal) > table->ultimatum
+			&& philo->times_ate == 0)
+		{
+			sem_wait(table->writing);
+			exit(1);
+		}
 		usleep(1000);
 	}
 	return (NULL);
 }
 
-void	init_philo(t_table *table, t_philos *philos, int i)
-{
-	philos->id = i + 1;
-	philos->times_ate = table->repeat_time;
-	philos->time_to_die = table->time_begin;
-	philos->table = table;
-}
-
-void	launch_simulation(t_table *table, int i)
+bool	launch_simulation(t_table *table, size_t i)
 {
 	t_philos	philo;
-	init_philo(table, &philo, i);
+
+	init_philos(table, &philo, i);
 	pthread_create(&philo.death_reaper, NULL, death_reaper, &philo);
-	while (true)
+	if (i % 2 != 0)
+		usleep(10000);
+	while (1)
 	{
-		if (--philo.times_ate)
+		if (--philo.times_ate != 0)
 		{
-			ft_eating(table, &philo);
+			eat(table, &philo);
 			if (philo.times_ate != 1)
 			{
-				print_output(table, philo.id, BYEL, SLEEPING);
+				print_output(table, philo.id, BMAG, SLEEPING);
 				create_delay(table->time_to_sleep);
-				print_output(table, philo.id, BMAG, THINKING);
+				print_output(table, philo.id, BYEL, THINKING);
 			}
 		}
 		else
 			break ;
 	}
 	pthread_join(philo.death_reaper, NULL);
-	// pthread_detach(philo.death_reaper);
-	exit(0);
+	return (true);
 }

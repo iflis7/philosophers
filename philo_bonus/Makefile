@@ -3,8 +3,7 @@ NAME = philo_bonus
 SRC_DIR = src/
 OBJ_DIR = .objs
 
-SRCS_FILES = philo_bonus.c utils.c check_args.c init.c  logs.c  threading.c routine.c moves.c
-#init.c check_args.c logs.c utils.c threading.c routine.c moves.c
+SRCS_FILES = philo_bonus.c check_args.c init.c utils.c logs.c  threading.c routine.c moves.c
 
 SRCS = $(addprefix $(SRC_DIR), $(SRCS_FILES))
 OBJS = $(SRCS:.c=.o)
