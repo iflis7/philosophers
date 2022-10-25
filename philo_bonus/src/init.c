@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:00:49 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/21 09:35:11 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/21 10:41:32 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool	manage_one_philo(t_table *table)
 	printf("%s%-10ld %-3zu %-30s%s\n", BRED, present, (size_t)1, DEAD, RESET);
 	sem_post(table->chops);
 	table->is_philos_dead = true;
-	return (false);
+	exit(-1);
 }
 
 bool	init_philos(t_table *table, t_philos *philo, size_t i)

@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:55:13 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/21 09:22:51 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/21 10:42:45 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	*death_reaper(void *args)
 	while (1)
 	{
 		if ((get_time() - philo->last_meal) > table->ultimatum
-			&& philo->times_ate != 0)
+			&& philo->times_ate)
 		{
 			sem_wait(table->writing);
 			printf("%s%-10ld %-3zu %-30s%s\n", BRED,
@@ -30,7 +30,7 @@ void	*death_reaper(void *args)
 			exit(1);
 		}
 		if ((get_time() - philo->last_meal) > table->ultimatum
-			&& philo->times_ate == 0)
+			&& !philo->times_ate)
 		{
 			sem_wait(table->writing);
 			exit(1);
@@ -46,8 +46,6 @@ bool	launch_simulation(t_table *table, size_t i)
 
 	init_philos(table, &philo, i);
 	pthread_create(&philo.death_reaper, NULL, death_reaper, &philo);
-	if (i % 2 != 0)
-		usleep(10000);
 	while (1)
 	{
 		if (--philo.times_ate != 0)
