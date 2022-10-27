@@ -82,5 +82,5 @@ The specific rules for the mandatory part are:
 * Each philosopher should be a process. But the main process should not be a philosopher.
 
 
-[![hsaadi's 42 Philosophers Score](https://badge42.vercel.app/api/v2/cl5s2p211013909jutf782quk/project/2821032)](https://github.com/JaeSeoKim/badge42)
+iflis7/42-Get-next-line
 
