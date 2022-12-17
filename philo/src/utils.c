@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tbeaudoi <tbeaudoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 13:03:21 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/04 18:28:07 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/26 18:53:22 by tbeaudoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
-
-size_t	ft_strlen(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
 
 size_t	ft_atol(const char *str)
 {
@@ -67,18 +57,15 @@ void	create_delay(time_t time)
 	usleep(time * 1000);
 }
 
-bool	delaying(t_table *table, time_t time)
+void	ft_sleep(long int time_to_stop)
 {
-	while (time > 0)
+	long int	delay;
+
+	while (1)
 	{
-		printf("Alaise! \n");
-		usleep(time * 100);
-		time -= 100;
-		if (table->is_philos_dead)
-		{
-			printf("Alai!");
-			return (false);
-		}
+		delay = time_to_stop - get_time();
+		if (delay <= 0)
+			break ;
+		usleep(50);
 	}
-	return (true);
 }

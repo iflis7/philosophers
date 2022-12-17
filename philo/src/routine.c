@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:55:13 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/04 18:43:08 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/20 01:41:33 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	*maestro_routine(void *args)
 		{
 			if (is_philo_dead(table, &i))
 				break ;
-
 		}
 	}
 	else

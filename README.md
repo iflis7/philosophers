@@ -81,6 +81,3 @@ The specific rules for the mandatory part are:
 * They have no states in memory but the number of available forks is represented by a semaphore.
 * Each philosopher should be a process. But the main process should not be a philosopher.
 
-
-[![hsaadi's 42 Philosophers Score](https://badge42.vercel.app/api/v2/cl5s2p211013909jutf782quk/project/2821032)](https://github.com/JaeSeoKim/badge42)
-

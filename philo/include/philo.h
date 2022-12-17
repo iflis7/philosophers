@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tbeaudoi <tbeaudoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:01:31 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/04 14:50:13 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/26 18:54:21 by tbeaudoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef philos_H
-# define philos_H
+#ifndef PHILO_H
+# define PHILO_H
 
 /* *************** ***************           *************** *************** */
 /*                                  INCLUDES                                 */
@@ -38,13 +38,13 @@
 # define ERRHLP "Error! Please enter just <help> to get help!"
 
 /* ***** MOVES ***** */
-# define EATING "🍔 is eating 🍔"
-# define SLEEPING "😴 is sleeping 😴"
-# define SLEEPING1 "😴 is sleeping 1 😴"
-# define THINKING "🤔 is thinking 🤔"
-# define CHOPSTICK1 "🍴 has taken the  first chopstick 🍴"
-# define CHOPSTICK2 "🍴 has taken the second chopstick 🍴"
-# define DEAD "💀☠️ IS DEAD 💀☠️"
+# define EATING "is eating"
+# define SLEEPING "is sleeping"
+# define SLEEPING1 "is sleeping 1"
+# define THINKING "is thinking"
+# define CHOPSTICK1 "has taken the  first chopstick"
+# define CHOPSTICK2 "has taken the second chopstick"
+# define DEAD "IS DEAD"
 
 /* ***** COLORS ***** */
 # define RESET "\e[0m"
@@ -112,7 +112,9 @@ bool				print_args_errors(t_table *table, size_t argc);
 bool				init_table(size_t argc, char **argv, t_table *table);
 
 /* ***** LOGS.c ***** */
+size_t				ft_strlen(char *str);
 bool				msg_error(char *str);
+void				philos_free(t_table *table);
 bool				print_output(t_table *table, size_t id, char *color,
 						char *status);
 
@@ -134,13 +136,10 @@ bool				joining_threads(t_table *table);
 bool				destroying_threads(t_table *table);
 
 /* ***** UTILS.c ***** */
-size_t				ft_strlen(char *str);
 size_t				ft_atol(const char *str);
-size_t				ft_strncmp(char *str1, char *str2, size_t n);
 time_t				get_time(void);
 time_t				time_range(time_t time);
 void				create_delay(time_t time);
-bool				delaying(t_table *table, time_t time);
-bool				philo_is_dead(t_table *table);
+void				start_some_delay(time_t start_time);
 
 #endif

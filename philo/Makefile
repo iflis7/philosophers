@@ -9,7 +9,7 @@ SRCS = $(addprefix $(SRC_DIR), $(SRCS_FILES))
 OBJS = $(SRCS:.c=.o)
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -g -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -g -fsanitize=thread
 LFLAGS = -pthread
 RM = rm -rf
 
@@ -20,6 +20,9 @@ all: $(NAME)
 $(NAME): $(OBJS)
 		@$(CC) $(OBJS) $(CFLAGS) $(LFLAGS) -o $(NAME)
 #@echo "$(GREEN)$(NAME) created!$(DEFAULT)"
+
+bonus:
+	
 
 clean:
 		@$(RM) $(OBJS)
