@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:48:10 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/04 19:23:14 by hsaadi           ###   ########.fr       */
+/*   Updated: 2022/10/25 01:11:34 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,18 @@ bool	threading(t_table *table)
 	size_t	i;
 
 	i = 0;
-	table->time_begin = get_time();
+	table->time_begin = get_time() + (table->philos_nb * 2 * 10);
 	if (pthread_mutex_init(&table->writing_lock, NULL) != 0)
 		return (false);
 	while (i < table->philos_nb)
 	{
 		table->n_thread = i;
+		start_some_delay(table->time_begin);
 		if (pthread_create(&table->philos[i].thread, NULL, &routine,
 				(void *)table))
 			return (false);
 		i++;
-		usleep(1000);
+		usleep(100);
 	}
 	if (pthread_create(&table->maestro, NULL, &maestro_routine, (void *)table))
 		return (false);
@@ -44,10 +45,8 @@ bool	joining_threads(t_table *table)
 	i = 0;
 	while (i < table->philos_nb)
 	{
-		// if (pthread_join(table->philos[i].thread, NULL))
 		if (table->philos[i].times_ate == 0)
 		{
-			// printf("table->philos[%zu].times_ate %zu \n", i,	table->philos[i].times_ate);
 			if (pthread_detach(table->philos[i].thread))
 				return (false);
 		}
@@ -56,7 +55,6 @@ bool	joining_threads(t_table *table)
 			if (pthread_join(table->philos[i].thread, NULL))
 				return (false);
 		}
-		// printf("Debug out! \n");
 		i++;
 	}
 	if (pthread_join(table->maestro, NULL))
