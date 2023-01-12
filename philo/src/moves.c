@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:53:38 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/12/18 11:11:32 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/12 18:30:50 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ bool	is_philo_dead(t_table *table, size_t *i)
 	time = time_range(table->philos[*i].time_to_die);
 	if (time > table->ultimatum)
 	{
-		// print_output(table, table->philos[*i].id, BRED, DEAD);
 		pthread_mutex_lock(&table->writing_lock);
 		printf("%s%-10ld %-3zu %-30s%s\n", BRED, time, table->philos[*i].id, DEAD, RESET);
 		table->is_philos_dead = true;
