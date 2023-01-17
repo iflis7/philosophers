@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:00:49 by hsaadi            #+#    #+#             */
-/*   Updated: 2023/01/17 15:30:58 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/17 18:15:48 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ bool	init_table(size_t argc, char **argv, t_table *table)
 {
 	if(ft_atol(argv[1]) > 200)
 		table->philos_nb = 200;
-	table->philos_nb = ft_atol(argv[1]);
+	else
+		table->philos_nb = ft_atol(argv[1]);
 	table->ultimatum = ft_atol(argv[2]);
 	table->time_to_eat = ft_atol(argv[3]);
 	table->time_to_sleep = ft_atol(argv[4]);

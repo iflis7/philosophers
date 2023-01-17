@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:48:10 by hsaadi            #+#    #+#             */
-/*   Updated: 2023/01/17 15:51:12 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/17 18:11:29 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ bool	threading(t_table *table)
 	{
 		table->n_thread = i;
 		// start_some_delay(table->time_begin);
+		
 		if (pthread_create(&table->philos[i].thread, NULL, &routine,
 				(void *)table))
 			return (false);
