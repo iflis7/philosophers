@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:00:49 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/12/18 11:11:25 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/17 15:30:58 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ static bool	init_chops(t_table *table)
 			return (false);
 		i++;
 	}
+	if (pthread_mutex_init(&table->writing_lock, NULL) != 0)
+		return (false);
 	return (true);
 }
 
@@ -75,6 +77,8 @@ static bool	init_philos(t_table **table)
 
 bool	init_table(size_t argc, char **argv, t_table *table)
 {
+	if(ft_atol(argv[1]) > 200)
+		table->philos_nb = 200;
 	table->philos_nb = ft_atol(argv[1]);
 	table->ultimatum = ft_atol(argv[2]);
 	table->time_to_eat = ft_atol(argv[3]);

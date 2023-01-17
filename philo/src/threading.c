@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:48:10 by hsaadi            #+#    #+#             */
-/*   Updated: 2023/01/12 18:25:51 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/17 15:51:12 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,19 @@ bool	threading(t_table *table)
 	size_t	i;
 
 	i = 0;
-	table->time_begin = get_time() + (table->philos_nb * 2 * 10);
-	if (pthread_mutex_init(&table->writing_lock, NULL) != 0)
-		return (false);
+	table->time_begin = get_time(); // + (table->philos_nb * 2 * 10);
 	while (i < table->philos_nb)
 	{
 		table->n_thread = i;
-		start_some_delay(table->time_begin);
+		// start_some_delay(table->time_begin);
 		if (pthread_create(&table->philos[i].thread, NULL, &routine,
 				(void *)table))
 			return (false);
 		i++;
-		usleep(100);
+		// usleep(10);
 	}
 	if (pthread_create(&table->maestro, NULL, &maestro_routine, (void *)table))
 		return (false);
-	usleep(1000);
 	if (!joining_threads(table))
 		return (false);
 	return (true);

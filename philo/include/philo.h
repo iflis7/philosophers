@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:01:31 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/12/18 11:11:29 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/17 15:12:56 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ bool				print_output(t_table *table, size_t id, char *color,
 bool				eat(t_table *table, size_t i);
 bool				go_to_sleep(t_table *table, size_t i);
 bool				think(t_table *table, size_t i);
-bool				is_philo_dead(t_table *table, size_t *i);
+bool				is_philo_dead(t_table *table, size_t i);
 bool				drop_chops(t_table *table, size_t i);
 
 /* ***** ROUTINE.c ***** */

@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 13:22:54 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/02 13:26:54 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/12 19:50:57 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ bool	print_args_errors(t_table *table, size_t argc)
 		printf("%s%s\n", BRED, ERRARG);
 		return (false);
 	}
-	if (argc == 6 && !table->repeat_time)
+	if (argc == 6 && table->repeat_time <= 0)
 	{
 		printf("%s%s\n", BRED, ERRARG);
 		return (false);

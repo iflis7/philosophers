@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:55:13 by hsaadi            #+#    #+#             */
-/*   Updated: 2022/10/20 01:41:33 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/17 15:17:40 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,10 @@ size_t	run_routine(t_table *table, size_t i)
 {
 	if (!eat(table, i))
 		return (false);
-	if (table->philos[i].times_ate)
-	{
-		if (!go_to_sleep(table, i))
-			return (false);
-		if (!think(table, i))
-			return (false);
-	}
+	if (!go_to_sleep(table, i))
+		return (false);
+	if (!think(table, i))
+		return (false);
 	return (true);
 }
 
@@ -60,7 +57,7 @@ void	*maestro_routine(void *args)
 	{
 		while (table->philos[i].times_ate && !table->is_philos_dead)
 		{
-			if (is_philo_dead(table, &i))
+			if (is_philo_dead(table, i))
 				break ;
 		}
 	}
@@ -68,7 +65,7 @@ void	*maestro_routine(void *args)
 	{
 		while (!table->is_philos_dead)
 		{
-			if (is_philo_dead(table, &i))
+			if (is_philo_dead(table, i))
 				break ;
 		}
 	}
