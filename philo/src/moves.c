@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:53:38 by hsaadi            #+#    #+#             */
-/*   Updated: 2023/01/17 16:17:33 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/17 22:42:52 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,10 @@ bool	think(t_table *table, size_t i)
 {
 	time_t	akud;
 
-	// if (!print_output(table, table->philos[i].id, BMAG, THINKING))
-	// return (false);
 	akud = time_range(table->time_begin);
 	pthread_mutex_lock(&table->writing_lock);
-	// if (!print_output(table, table->philos[i].id, DEAD, SLEEPING))
-	// return (false);
 	printf("%s%-10ld %-3zu %-30s%s\n", BMAG, akud, table->philos[i].id,
 			THINKING, RESET);
-	// table->is_philos_dead = true;
 	pthread_mutex_unlock(&table->writing_lock);
 	return (true);
 }
@@ -60,14 +55,11 @@ bool	is_philo_dead(t_table *table, size_t i)
 	time_t	time;
 	time_t	akud;
 
-	// time to printout as timestamp
 	akud = time_range(table->time_begin);
 	time = time_range(table->philos[i].time_to_die);
 	if (time > (time_t)table->ultimatum)
 	{
 		pthread_mutex_lock(&table->writing_lock);
-		// if (!print_output(table, table->philos[i].id, DEAD, SLEEPING))
-		// return (false);
 		printf("%s%-10ld %-3zu %-30s%s\n", BRED, akud, table->philos[i].id,
 				DEAD, RESET);
 		table->is_philos_dead = true;
@@ -79,9 +71,9 @@ bool	is_philo_dead(t_table *table, size_t i)
 
 bool	drop_chops(t_table *table, size_t i)
 {
-	if (pthread_mutex_unlock(&table->chopsticks[table->philos[i].chops.left]))
-		return (false);
 	if (pthread_mutex_unlock(&table->chopsticks[table->philos[i].chops.right]))
+		return (false);
+	if (pthread_mutex_unlock(&table->chopsticks[table->philos[i].chops.left]))
 		return (false);
 	table->philos[i].times_ate--;
 	return (true);
