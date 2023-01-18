@@ -6,11 +6,27 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:48:10 by hsaadi            #+#    #+#             */
-/*   Updated: 2023/01/18 11:38:21 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/18 12:24:54 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
+
+/**
+ * @brief Create and manage threads for philosophers and maestro
+ *
+
+	* This function takes in a pointer to a table and creates threads for each philosopher
+
+	* and the maestro using pthread_create and assigns the routine function for the philosophers
+ * and maestro_routine function for the maestro.
+
+	* It also calls joining_threads function to wait for all threads to complete before returning.
+ *
+ * @param table Pointer to the table structure
+ * @return true if thread creation and management is successful
+ * @return false if thread creation or joining fails
+ */
 
 bool	threading(t_table *table)
 {
@@ -33,6 +49,18 @@ bool	threading(t_table *table)
 	return (true);
 }
 
+/**
+ * @brief Wait for all threads to complete
+ *
+
+	* This function takes in a pointer to a table and waits for all philosopher threads
+ * and maestro thread to complete using pthread_join.
+ *
+ * @param table Pointer to the table structure
+ * @return true if all threads are successfully joined
+ * @return false if any thread fails to join
+ */
+
 bool	joining_threads(t_table *table)
 {
 	size_t	i;
@@ -48,6 +76,8 @@ bool	joining_threads(t_table *table)
 		return (false);
 	return (true);
 }
+
+
 
 bool	destroying_threads(t_table *table)
 {

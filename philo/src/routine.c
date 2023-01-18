@@ -6,12 +6,18 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:55:13 by hsaadi            #+#    #+#             */
-/*   Updated: 2023/01/18 11:29:37 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/18 12:59:04 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
+/**
+ * @brief The routine each philo should run
+ * 
+ * @param args The address of the struct to use 
+ * @return void* 
+ */
 void	*routine(void *args)
 {
 	t_table	*table;
@@ -35,6 +41,13 @@ void	*routine(void *args)
 	return (NULL);
 }
 
+/**
+ * @brief Run the enire routine, eat, sleep and think 
+ * 
+ * @param table The table struct 
+ * @param i The philo index
+ * @return size_t return True if ll well or false if somthing went wrong!
+ */
 size_t	run_routine(t_table *table, size_t i)
 {
 	if (!table->is_philos_dead && !eat(table, i))
@@ -46,6 +59,13 @@ size_t	run_routine(t_table *table, size_t i)
 	return (true);
 }
 
+/**
+
+	* @brief The routine the maestro should run to check if any other philo is dead or should die!
+ * 
+ * @param args The address of the struct to use 
+ * @return void* 
+ */
 void	*maestro_routine(void *args)
 {
 	t_table	*table;

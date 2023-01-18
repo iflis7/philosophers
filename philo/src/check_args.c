@@ -6,12 +6,19 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 13:22:54 by hsaadi            #+#    #+#             */
-/*   Updated: 2023/01/12 19:50:57 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/18 11:56:45 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
+/**
+ * @brief Check if arguments are valid (Numbers)
+ * 
+ * @param argv The list of args to check 
+ * @return true  if valid
+ * @return false is not valid
+ */
 bool	args_are_valid(char **argv)
 {
 	int	i;
@@ -35,6 +42,14 @@ bool	args_are_valid(char **argv)
 	return (true);
 }
 
+/**
+ * @brief Print out the errors 
+ * 
+ * @param table The structure that contains all the table's data
+ * @param argc The number or args received
+ * @return true if all well
+ * @return false if any error
+ */
 bool	print_args_errors(t_table *table, size_t argc)
 {
 	if (!table->philos_nb || !table->ultimatum || !table->time_to_eat

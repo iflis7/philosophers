@@ -6,12 +6,20 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:53:38 by hsaadi            #+#    #+#             */
-/*   Updated: 2023/01/18 11:40:14 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/18 12:29:19 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
+/**
+ * @brief Takes chops one after the other and taking the time needed to eat then dropping the chops
+ * 
+ * @param table The table struct
+ * @param i The index of the philo
+ * @return true if all well
+ * @return false incase of an error
+ */
 bool	eat(t_table *table, size_t i)
 {
 	if (table->is_philos_dead)
@@ -32,6 +40,14 @@ bool	eat(t_table *table, size_t i)
 	return (true);
 }
 
+/**
+ * @brief Put the philosopher to sleep.
+ * 
+ * @param table The table struct
+ * @param i The index of the philo
+ * @return true if all well
+ * @return false if any error
+ */
 bool	go_to_sleep(t_table *table, size_t i)
 {
 	if (!print_output(table, table->philos[i].id, BYEL, SLEEPING))
@@ -40,6 +56,14 @@ bool	go_to_sleep(t_table *table, size_t i)
 	return (true);
 }
 
+/**
+ * @brief Thinking for a philo. Print it.
+ * 
+ * @param table The table struct
+ * @param i The index of the philo
+ * @return true if all well
+ * @return false if any error
+ */
 bool	think(t_table *table, size_t i)
 {
 	time_t	akud;
@@ -55,6 +79,14 @@ bool	think(t_table *table, size_t i)
 	return (true);
 }
 
+/**
+ * @brief Check if the philo is dead or not
+ * 
+ * @param table The table struct
+ * @param i The index of the philo
+ * @return true if the philo is dead
+ * @return false if the philo is alive
+ */
 bool	is_philo_dead(t_table *table, size_t i)
 {
 	time_t	time;
@@ -74,6 +106,14 @@ bool	is_philo_dead(t_table *table, size_t i)
 	return (false);
 }
 
+/**
+ * @brief Drop the chops right and left
+ * 
+ * @param table The table struct
+ * @param i The index of the philo
+ * @return true if the philo is dead
+ * @return false if the philo is alive
+ */
 bool	drop_chops(t_table *table, size_t i)
 {
 	if (pthread_mutex_unlock(&table->chopsticks[table->philos[i].chops.right]))
