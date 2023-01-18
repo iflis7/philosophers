@@ -1,11 +1,46 @@
 # `Philosophers`
 
+
+## Table of Content
+
+
+
+## The Dining Philosophers problem
+### Overview
+
+This project is an implementation of the classic "Dining Philosophers" problem, where a group of philosophers are sitting around a table and are each trying to eat a bowl of rice using chopsticks. The goal of the project is to ensure that no philosopher starves and that there is no deadlock.
+
+The project consists of two parts: the mandatory part and the bonus part. The mandatory part focuses on the basic implementation of threading and mutexes, while the bonus part includes additional features and optimization.
+
+![Dining-Philosophers-problem](philos_dining_prob.gif)
+
+#### Skills Gained
+
+- Thread creation and management
+- Mutex usage for synchronization
+- Concurrent programming
+- Problem-solving
+
+#### Technologies Used
+
+- C programming language
+- pthread library
+
+#### Concepts Learned
+
+- Dining Philosophers problem
+- Deadlock and starvation avoidance
+- Thread synchronization
+
+
+## The Subject
+
 In this project, you will learn the basics of threading a process.
 You will see how to create threads and you will discover mutexes. `Version: 10`.<br>
 You can read the subject: [`philosophers.subject.pdf`](subject/philo.subject.pdf)
 
 
-## Overview
+### Overview
 
 Here are the things you need to know if you want to succeed this assignment:
 * One or more philosophers sit at a round table. There is a large bowl of spaghetti in the middle of the table.
@@ -19,7 +54,7 @@ Here are the things you need to know if you want to succeed this assignment:
 * No need to say that philosophers should avoid dying!
 
 
-### Global rules
+#### Global rules
 
 * You have to write a program for the mandatory part and another one for the bonus part (if you decide to do the bonus part). They both have to comply with the following rules:
 
@@ -31,7 +66,7 @@ Here are the things you need to know if you want to succeed this assignment:
 • Each philosopher has a number ranging from 1 to number_of_philosophers.
 • Philosopher number 1 sits next to philosopher number number_of_philosophers. Any other philosopher number N sits between philosopher number N - 1 and philosopher number N + 1.
 
-### About the logs
+#### About the logs
 
 • Any state change of a philosopher must be formatted as follows:
     * timestamp_in_ms X has taken a fork
@@ -44,7 +79,7 @@ Replace timestamp_in_ms with the current timestamp in milliseconds and X with th
 • A message announcing a philosopher died should be displayed no more than 10 ms after the actual death of the philosopher.
 • Again, philosophers should avoid dying!
 
-## Mandatory part
+#### Mandatory part
 
 Program name        | philo
 ---------------     | ----------------------------
@@ -61,7 +96,7 @@ The specific rules for the mandatory part are:
 * There is one fork between each pair of philosophers. Therefore, if there are several philosophers, each philosopher has a fork on their left side and a fork on their right side. If there is only one philosopher, there should be only one fork on the table.
 * To prevent philosophers from duplicating forks, you should protect the forks state with a mutex for each of them.
 
-## Bonus part
+#### Bonus part
 
 Program name        | philo_bonus
 ---------------     | ----------------------------
@@ -80,4 +115,3 @@ The specific rules for the mandatory part are:
 * All the forks are put in the middle of the table.
 * They have no states in memory but the number of available forks is represented by a semaphore.
 * Each philosopher should be a process. But the main process should not be a philosopher.
-
