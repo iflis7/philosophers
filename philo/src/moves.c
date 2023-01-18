@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:53:38 by hsaadi            #+#    #+#             */
-/*   Updated: 2023/01/17 22:42:52 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/18 11:40:14 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 bool	eat(t_table *table, size_t i)
 {
+	if (table->is_philos_dead)
+		return (false);
 	if (pthread_mutex_lock(&table->chopsticks[table->philos[i].chops.left]))
 		return (false);
 	if (!print_output(table, table->philos[i].id, BBLUE, CHOPSTICK1))
@@ -42,11 +44,14 @@ bool	think(t_table *table, size_t i)
 {
 	time_t	akud;
 
-	akud = time_range(table->time_begin);
-	pthread_mutex_lock(&table->writing_lock);
-	printf("%s%-10ld %-3zu %-30s%s\n", BMAG, akud, table->philos[i].id,
-			THINKING, RESET);
-	pthread_mutex_unlock(&table->writing_lock);
+	if (!table->is_philos_dead)
+	{
+		akud = time_range(table->time_begin);
+		pthread_mutex_lock(&table->writing_lock);
+		printf("%s%-10ld %-3zu %-30s%s\n", BMAG, akud, table->philos[i].id,
+				THINKING, RESET);
+		pthread_mutex_unlock(&table->writing_lock);
+	}
 	return (true);
 }
 

@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:48:10 by hsaadi            #+#    #+#             */
-/*   Updated: 2023/01/17 22:43:54 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/18 11:38:21 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,8 @@ bool	joining_threads(t_table *table)
 	i = 0;
 	while (i < table->philos_nb)
 	{
-		if (table->philos[i].times_ate == 0)
-		{
-			if (pthread_detach(table->philos[i].thread))
-				return (false);
-		}
-		else if (table->philos[i].times_ate)
-		{
-			if (pthread_join(table->philos[i].thread, NULL))
-				return (false);
-		}
+		if (pthread_join(table->philos[i].thread, NULL))
+			return (false);
 		i++;
 	}
 	if (pthread_join(table->maestro, NULL))
