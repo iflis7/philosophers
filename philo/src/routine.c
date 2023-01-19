@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:55:13 by hsaadi            #+#    #+#             */
-/*   Updated: 2023/01/18 12:59:04 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/18 18:59:36 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,38 +25,16 @@ void	*routine(void *args)
 
 	table = (t_table *)args;
 	i = table->n_thread;
-	if (table->repeat_time)
+	while (!table->is_philos_dead)
 	{
-		while (table->philos[i].times_ate && !table->is_philos_dead)
-			run_routine(table, i);
-	}
-	else
-	{
-		while (!table->is_philos_dead)
-		{
-			if (!run_routine(table, i))
-				break ;
-		}
+		if (!eat(table, i))
+			return (false);
+		if (!go_to_sleep(table, i))
+			return (false);
+		if (!think(table, i))
+			return (false);
 	}
 	return (NULL);
-}
-
-/**
- * @brief Run the enire routine, eat, sleep and think 
- * 
- * @param table The table struct 
- * @param i The philo index
- * @return size_t return True if ll well or false if somthing went wrong!
- */
-size_t	run_routine(t_table *table, size_t i)
-{
-	if (!table->is_philos_dead && !eat(table, i))
-		return (false);
-	if (!go_to_sleep(table, i))
-		return (false);
-	if (!think(table, i))
-		return (false);
-	return (true);
 }
 
 /**
@@ -73,21 +51,10 @@ void	*maestro_routine(void *args)
 
 	table = (t_table *)args;
 	i = 0;
-	if (table->philos[i].times_ate)
+	while (!table->is_philos_dead)
 	{
-		while (table->philos[i].times_ate && !table->is_philos_dead)
-		{
-			if (is_philo_dead(table, i))
-				break ;
-		}
-	}
-	else
-	{
-		while (!table->is_philos_dead)
-		{
-			if (is_philo_dead(table, i))
-				break ;
-		}
+		if (!table->philos[i].times_ate || is_philo_dead(table, i))
+			break ;
 	}
 	return (NULL);
 }

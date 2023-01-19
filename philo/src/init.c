@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:00:49 by hsaadi            #+#    #+#             */
-/*   Updated: 2023/01/18 12:21:56 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/18 19:07:39 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ static bool	init_chops(t_table *table)
 		i++;
 	}
 	if (pthread_mutex_init(&table->writing_lock, NULL) != 0)
+		return (false);
+	if (pthread_mutex_init(&table->m_dead, NULL) != 0)
 		return (false);
 	return (true);
 }
@@ -139,8 +141,11 @@ bool	init_table(size_t argc, char **argv, t_table *table)
 	table->ultimatum = ft_atol(argv[2]);
 	table->time_to_eat = ft_atol(argv[3]);
 	table->time_to_sleep = ft_atol(argv[4]);
+	table->time_begin = 0;
 	if (argv[5])
 		table->repeat_time = ft_atol(argv[5]);
+	else 
+		table->repeat_time = -1;
 	if (!print_args_errors(table, argc))
 		return (false);
 	if (!init_philos(&table))

@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:01:31 by hsaadi            #+#    #+#             */
-/*   Updated: 2023/01/17 15:12:56 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/18 18:05:55 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ typedef struct s_table
 	pthread_mutex_t	*chopsticks;
 	pthread_mutex_t	writing_lock;
 	pthread_t		maestro;
+	pthread_mutex_t m_dead;
 	t_philos		*philos;
 }					t_table;
 

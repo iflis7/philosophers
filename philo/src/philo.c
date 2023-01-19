@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 13:30:48 by hsaadi            #+#    #+#             */
-/*   Updated: 2023/01/17 22:36:03 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/18 19:02:26 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int argc, char **argv)
 			return (-1);
 		if (!destroying_threads(&table))
 			return (-1);
-		philos_free(&table);
+		// philos_free(&table);
 		return (0);
 	}
 }
