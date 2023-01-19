@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:55:13 by hsaadi            #+#    #+#             */
-/*   Updated: 2023/01/18 18:59:36 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/19 16:02:17 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	*routine(void *args)
 	while (!table->is_philos_dead)
 	{
 		if (!eat(table, i))
-			return (false);
+			{drop_chops(table, i);
+			return (false);}
 		if (!go_to_sleep(table, i))
 			return (false);
 		if (!think(table, i))

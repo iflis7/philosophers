@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 13:03:21 by hsaadi            #+#    #+#             */
-/*   Updated: 2023/01/18 19:15:29 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/19 16:09:37 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,18 @@ time_t	time_range(time_t time)
  * @brief Create a delay for the specified (time)
  * @param time The delay
  */
+// void	create_delay(time_t time)
+// {
+// 	usleep(time * 1000);
+// }
+
 void	create_delay(time_t time)
 {
-	usleep(time * 1000);
+	time_t	delay;
+
+	delay = get_time() + time;
+	while (get_time() < delay)
+		usleep(50);
 }
 
 /**
