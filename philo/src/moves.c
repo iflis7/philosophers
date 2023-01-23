@@ -6,14 +6,15 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:53:38 by hsaadi            #+#    #+#             */
-/*   Updated: 2023/01/18 19:07:09 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/23 16:30:11 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
 /**
- * @brief Takes chops one after the other and taking the time needed to eat then dropping the chops
+
+	* @brief Takes chops one after the other and taking the time needed to eat then dropping the chops
  * 
  * @param table The table struct
  * @param i The index of the philo
@@ -24,7 +25,7 @@ bool	eat(t_table *table, size_t i)
 {
 	// if (table->is_philos_dead)
 	// 	return (false);
-	if(!table->time_begin)
+	if (!table->time_begin)
 		table->time_begin = get_time();
 	if (pthread_mutex_lock(&table->chopsticks[table->philos[i].chops.left]))
 		return (false);
@@ -38,6 +39,7 @@ bool	eat(t_table *table, size_t i)
 		return (false);
 	table->philos[i].time_to_die = get_time();
 	create_delay(table->time_to_eat);
+	table->philos[i].times_ate--;
 	drop_chops(table, i);
 	return (true);
 }
@@ -70,16 +72,14 @@ bool	think(t_table *table, size_t i)
 {
 	time_t	akud;
 
-	if (!table->is_philos_dead)
-	{
-		akud = time_range(table->time_begin);
-		pthread_mutex_lock(&table->writing_lock);
-		printf("%s%-10ld %-3zu %-30s%s\n", BMAG, akud, table->philos[i].id,
-				THINKING, RESET);
-		pthread_mutex_unlock(&table->writing_lock);
-		return (true);
-	}
-	return (false);
+	if (table->is_philos_dead)
+		return (false);
+	akud = time_range(table->time_begin);
+	pthread_mutex_lock(&table->writing_lock);
+	printf("%s%-10ld %-3zu %-30s%s\n", BMAG, akud, table->philos[i].id,
+			THINKING, RESET);
+	pthread_mutex_unlock(&table->writing_lock);
+	return (true);
 }
 
 /**
@@ -95,14 +95,16 @@ bool	is_philo_dead(t_table *table, size_t i)
 	time_t	time;
 	time_t	akud;
 
+	pthread_mutex_lock(&table->writing_lock);
 	akud = time_range(table->time_begin);
 	time = time_range(table->philos[i].time_to_die);
+	pthread_mutex_unlock(&table->writing_lock);
 	if (time > (time_t)table->ultimatum)
 	{
 		pthread_mutex_lock(&table->writing_lock);
+		table->is_philos_dead = true;
 		printf("%s%-10ld %-3zu %-30s%s\n", BRED, akud, table->philos[i].id,
 				DEAD, RESET);
-		table->is_philos_dead = true;
 		pthread_mutex_unlock(&table->writing_lock);
 		return (true);
 	}
@@ -123,6 +125,5 @@ bool	drop_chops(t_table *table, size_t i)
 		return (false);
 	if (pthread_mutex_unlock(&table->chopsticks[table->philos[i].chops.left]))
 		return (false);
-	table->philos[i].times_ate--;
 	return (true);
 }

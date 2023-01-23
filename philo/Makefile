@@ -9,8 +9,8 @@ SRCS = $(addprefix $(SRC_DIR), $(SRCS_FILES))
 OBJS = $(SRCS:.c=.o)
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -g
-LFLAGS = -pthread -fsanitize=thread
+CFLAGS = -Wall -Werror -Wextra -g -fsanitize=thread
+LFLAGS =  -fsanitize=thread
 RM = rm -rf
 
 
@@ -18,7 +18,7 @@ all: $(NAME)
 #@echo "BOOM 💥💥💥💥💥 $(NAME) Compiled! 💯 $(DEFAULT)"
 
 $(NAME): $(OBJS)
-		@$(CC) $(OBJS) $(CFLAGS) $(LFLAGS) -o $(NAME)
+		@$(CC) $(OBJS) $(CFLAGS) $(LFLAGS)  -o $(NAME)
 #@echo "$(GREEN)$(NAME) created!$(DEFAULT)"
 
 bonus:

@@ -6,7 +6,7 @@
 /*   By: hsaadi <hsaadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 12:01:31 by hsaadi            #+#    #+#             */
-/*   Updated: 2023/01/18 18:05:55 by hsaadi           ###   ########.fr       */
+/*   Updated: 2023/01/21 14:05:53 by hsaadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 
 // For threading
 # include <pthread.h>
+# include <string.h>
 
 /* *************** ***************           *************** *************** */
 /*                                   MACROS                                  */
@@ -97,7 +98,7 @@ typedef struct s_table
 	pthread_mutex_t	*chopsticks;
 	pthread_mutex_t	writing_lock;
 	pthread_t		maestro;
-	pthread_mutex_t m_dead;
+	pthread_mutex_t	m_dead;
 	t_philos		*philos;
 }					t_table;
 
