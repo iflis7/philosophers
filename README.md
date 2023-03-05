@@ -1,9 +1,21 @@
-# `Philosophers`
+<h1 align="center">
+	📖 Philosophers
+</h1>
 
+<p align="center">
+	<b><i>This project is an implementation of the classic "Dining Philosophers" problem.</i></b><br>
+</p>
+
+<p align="center">
+    <a href="https://www.cprogramming.com/"><img alt="Made with C" src="https://img.shields.io/badge/Made%20with-C-1f425f.svg"/></a>
+    <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/iflis7/get_next_line?color=lightblue" />
+    <img alt="Number of lines of code" src="https://img.shields.io/tokei/lines/github/iflis7/get_next_line?color=critical" />
+    <img alt="Code language count" src="https://img.shields.io/github/languages/count/iflis7/get_next_line?color=yellow" />
+    <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/iflis7/get_next_line?color=blue" />
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/iflis7/get_next_line?color=green" />
+</p>
 
 ## Table of Content
-
-
 
 ## The Dining Philosophers problem
 ### Overview
